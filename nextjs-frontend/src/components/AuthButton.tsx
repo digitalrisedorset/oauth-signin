@@ -1,30 +1,43 @@
 "use client";
 
 import { useSession, signIn, signOut } from "next-auth/react";
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
+import {Button} from "@/components/ui/button";
 
 export default function AuthButton() {
     const { data: session } = useSession();
 
     return (
-        <div className="flex items-center gap-4">
+        <Card className="w-full">
             {session ? (
                 <>
-                    <p className="text-sm font-semibold">{session.user?.name}</p>
-                    <button
-                        className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
-                        onClick={() => signOut()}
-                    >
-                        Sign Out
-                    </button>
+                    <CardHeader>
+                        <CardTitle>{session.user?.name}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <Button
+                            onClick={() => signOut()}
+                            className="w-full bg-red-500 hover:bg-red-600"
+                        >
+                            Sign Out
+                        </Button>
+                    </CardContent>
                 </>
             ) : (
-                <button
-                    className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-                    onClick={() => signIn("google")}
-                >
-                    Sign In with Google
-                </button>
+                <>
+                    <CardHeader>
+                        <CardTitle>Or Sign In with OAuth</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <Button
+                            onClick={() => signIn("google")}
+                            className="w-full bg-red-500 hover:bg-red-600"
+                        >
+                            Sign In with Google
+                        </Button>
+                    </CardContent>
+                </>
             )}
-        </div>
+        </Card>
     );
 }

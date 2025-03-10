@@ -3,70 +3,101 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import AuthButton from "@/components/AuthButton";
+
+const formSchema = z.object({
+    email: z.string().email("Invalid email address"),
+    password: z.string().min(6, "Password must be at least 6 characters"),
+});
 
 export default function LoginPage() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
     const router = useRouter();
+    const [isSigningIn, setIsSigningIn] = useState(false);
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setError("");
+    const form = useForm({
+        resolver: zodResolver(formSchema),
+        defaultValues: { email: "", password: "" },
+    });
+
+    async function handleSubmit(values: { email: string; password: string }) {
+        setIsSigningIn(true);
 
         const result = await signIn("credentials", {
-            email,
-            password,
+            email: values.email,
+            password: values.password,
             redirect: false,
         });
 
         if (result?.error) {
-            setError(result.error);
+            form.setError("password", { message: result.error });
+            setIsSigningIn(false);
         } else {
-            router.push("/dashboard"); // Redirect on success
+            router.push("/dashboard");
         }
-    };
+    }
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen">
-            <h1 className="text-3xl font-bold mb-4">Sign In</h1>
+        <div className="flex flex-col items-center justify-center min-h-screen p-6 bg-gray-100">
+            <h1 className="text-3xl font-bold mb-6">Sign In</h1>
 
-            {error && <p className="text-red-500">{error}</p>}
+            <Card className="w-full max-w-md">
+                <CardHeader>
+                    <CardTitle>Login</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <Form {...form}>
+                        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+                            <FormField
+                                control={form.control}
+                                name="email"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Email</FormLabel>
+                                        <FormControl>
+                                            <Input type="email" placeholder="Enter your email" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
 
-            <form onSubmit={handleSubmit} className="space-y-4 w-72">
-                <input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full p-2 border rounded-md"
-                    required
-                />
-                <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="w-full p-2 border rounded-md"
-                    required
-                />
-                <button type="submit" className="w-full p-2 bg-blue-500 text-white rounded-md">
-                    Sign In
-                </button>
-            </form>
+                            <FormField
+                                control={form.control}
+                                name="password"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Password</FormLabel>
+                                        <FormControl>
+                                            <Input type="password" placeholder="Enter your password" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
 
-            <p className="my-4">Or</p>
+                            <Button type="submit" className="w-full" disabled={isSigningIn}>
+                                {isSigningIn ? "Signing In..." : "Sign In"}
+                            </Button>
+                        </form>
+                    </Form>
 
-            <button
-                onClick={() => signIn("google")}
-                className="w-full p-2 bg-red-500 text-white rounded-md"
-            >
-                Sign In with Google
-            </button>
+                    <div className="my-4 flex items-center">
+                        <div className="border-t w-full"></div>
+                        <span className="mx-4 text-gray-500">OR</span>
+                        <div className="border-t w-full"></div>
+                    </div>
 
-            <p className="mt-4">
-                Don't have an account? <a href="/auth/register" className="text-blue-600">Register</a>
-            </p>
+                    {/* 🌍 OAuth Sign-In */}
+                    {!isSigningIn && <AuthButton />}
+                </CardContent>
+            </Card>
         </div>
     );
 }

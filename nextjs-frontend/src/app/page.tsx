@@ -1,82 +1,108 @@
 "use client";
 
-import { signIn, useSession } from "next-auth/react";
 import { useState } from "react";
+import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import AuthButton from "@/components/AuthButton";
+
+const formSchema = z.object({
+    email: z.string().email("Invalid email address"),
+    password: z.string().min(6, "Password must be at least 6 characters long"),
+});
 
 export default function HomePage() {
     const { data: session } = useSession();
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
-    const [isSigningIn, setIsSigningIn] = useState(false); // Hide OAuth when signing in
     const router = useRouter();
+    const [isSigningIn, setIsSigningIn] = useState(false);
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setError("");
-        setIsSigningIn(true); // Hide OAuth buttons
+    const form = useForm({
+        resolver: zodResolver(formSchema),
+        defaultValues: { email: "", password: "" },
+    });
+
+    async function handleSubmit(values: { email: string; password: string }) {
+        setIsSigningIn(true);
 
         const result = await signIn("credentials", {
-            email,
-            password,
+            email: values.email,
+            password: values.password,
             redirect: false,
         });
 
         if (result?.error) {
-            setError(result.error);
-            setIsSigningIn(false); // Show OAuth again if failed
+            form.setError("password", { message: result.error });
+            setIsSigningIn(false);
         } else {
-            router.push("/dashboard"); // Redirect only on successful login
+            router.push("/dashboard");
         }
-    };
+    }
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen p-6">
+        <div className="flex flex-col items-center justify-center min-h-screen p-6 bg-gray-100">
             <h1 className="text-3xl font-bold mb-6">Welcome to My App</h1>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white p-6 shadow-md rounded-lg w-full max-w-2xl">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-2xl">
                 {/* 🔑 Email/Password Login Form */}
-                <div>
-                    <h2 className="text-xl font-semibold mb-4">Sign In with Email</h2>
-                    {error && <p className="text-red-500 mb-2">{error}</p>}
-                    <form onSubmit={handleSubmit} className="space-y-4">
-                        <input
-                            type="email"
-                            placeholder="Email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            className="w-full p-2 border rounded-md"
-                            required
-                        />
-                        <input
-                            type="password"
-                            placeholder="Password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            className="w-full p-2 border rounded-md"
-                            required
-                        />
-                        <button type="submit" className="w-full p-2 bg-blue-500 text-white rounded-md">
-                            Sign In
-                        </button>
-                    </form>
-                    <p className="mt-4 text-sm">
-                        Don't have an account?{" "}
-                        <a href="/auth/register" className="text-blue-600 font-semibold">
-                            Register
-                        </a>
-                    </p>
-                </div>
+                <Card className="w-full">
+                    <CardHeader>
+                        <CardTitle>Sign In with Email</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <Form {...form}>
+                            <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+                                <FormField
+                                    control={form.control}
+                                    name="email"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Email</FormLabel>
+                                            <FormControl>
+                                                <Input type="email" placeholder="Enter your email" {...field} />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                <FormField
+                                    control={form.control}
+                                    name="password"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Password</FormLabel>
+                                            <FormControl>
+                                                <Input type="password" placeholder="Enter your password" {...field} />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                <Button type="submit" className="w-full" disabled={isSigningIn}>
+                                    {isSigningIn ? "Signing In..." : "Sign In"}
+                                </Button>
+                            </form>
+                        </Form>
+
+                        <p className="mt-4 text-sm">
+                            Don't have an account?{" "}
+                            <a href="/auth/register" className="text-blue-600 font-semibold">
+                                Register
+                            </a>
+                        </p>
+                    </CardContent>
+                </Card>
 
                 {/* 🌍 OAuth Sign-In Options (Hidden when signing in via credentials) */}
                 {!isSigningIn && (
-                    <div>
-                        <h2 className="text-xl font-semibold mb-4">Or Sign In with OAuth</h2>
-                        <AuthButton />
-                        {/* Add more providers if needed */}
-                    </div>
+                    <AuthButton />
                 )}
             </div>
         </div>
