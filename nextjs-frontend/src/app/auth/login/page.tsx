@@ -11,20 +11,24 @@ import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import AuthButton from "@/components/AuthButton";
+import {passwordSchema} from "@/validation/passwordSchema";
 
 const formSchema = z.object({
-    email: z.string().email("Invalid email address"),
-    password: z.string().min(6, "Password must be at least 6 characters"),
-});
+    email: z.string().email(),
+    password: passwordSchema
+})
 
 export default function LoginPage() {
     const router = useRouter();
     const [isSigningIn, setIsSigningIn] = useState(false);
 
-    const form = useForm({
+    const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
-        defaultValues: { email: "", password: "" },
-    });
+        defaultValues: {
+            email: '',
+            password: '',
+        }
+    })
 
     async function handleSubmit(values: { email: string; password: string }) {
         setIsSigningIn(true);
