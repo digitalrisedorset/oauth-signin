@@ -26,7 +26,7 @@ export default function RegisterPage() {
         defaultValues: {
             email: '',
             password: '',
-            passwordConfirm: ''
+            confirmPassword: ''
         }
     })
 
