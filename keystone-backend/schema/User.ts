@@ -55,10 +55,23 @@ export const User = list({
         password: password({
             validation: {
                 isRequired: true,
-                minLength: 8,
-                match: {
-                    regex: /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d@$!%*?&]{8,}$/,
-                    explanation: "Password must be at least 8 characters, contain 1 uppercase letter, 1 number, and 1 special character (!@#$%^&*)."
+                minLength: 8, // ✅ Minimum length applies to all users
+            },
+            hooks: {
+                validateInput: async ({ resolvedData, addValidationError }) => {
+                    if (resolvedData.password) {
+                        const userIsAdmin = resolvedData.isAdmin;
+
+                        if (userIsAdmin) {
+                            const strongPasswordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d@$!%*?&]{8,}$/;
+
+                            if (!strongPasswordRegex.test(resolvedData.password)) {
+                                addValidationError(
+                                    "Admin password must be at least 8 characters, contain 1 uppercase letter, 1 number, and 1 special character."
+                                );
+                            }
+                        }
+                    }
                 },
             },
         }),

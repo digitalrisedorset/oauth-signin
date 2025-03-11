@@ -18,6 +18,9 @@ import {limiter} from "./rate-limiter";
 export default withAuth(
   config({
       server: {
+          cors: { origin: [process.env.FRONTEND_HOST], credentials: true },
+          port: 3000,
+          maxFileSize: 200 * 1024 * 1024,
           extendExpressApp: (app) => {
               //app.use("/api/graphql", limiter); // Apply rate limiter to API*/
 
@@ -39,6 +42,10 @@ export default withAuth(
                   next();
               });
           },
+      },
+      graphql: {
+          playground: process.env.NODE_ENV !== "production", // ❌ Disable Playground in production
+          introspection: process.env.NODE_ENV !== "production", // ❌ Prevent schema exposure
       },
     db: {
       // we're using sqlite for the fastest startup experience
