@@ -3,6 +3,27 @@ import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { NextAuthOptions } from "next-auth";
 import bcrypt from "bcrypt";
+import {gql} from "@apollo/client";
+import {createApolloClient} from "@/lib/apolloClient";
+
+const LOGIN_MUTATION = gql`
+  mutation AuthenticateUserWithPassword($email: String!, $password: String!) {
+    authenticateUserWithPassword(email: $email, password: $password) {
+      ... on UserAuthenticationWithPasswordSuccess {
+        sessionToken
+        item {
+          id
+          email
+          name
+        }
+      }
+      ... on UserAuthenticationWithPasswordFailure {
+        message
+      }
+    }
+  }
+`;
+
 
 export const authOptions: NextAuthOptions = {
     providers: [
@@ -17,42 +38,47 @@ export const authOptions: NextAuthOptions = {
                 password: {label: "Password", type: "password"},
             },
             async authorize(credentials) {
-                if (!credentials?.email || !credentials?.password) {
-                    throw new Error("Please enter email and password");
+                const client = createApolloClient();
+                const { email, password } = credentials;
+
+                const { data } = await client.mutate({
+                    mutation: LOGIN_MUTATION,
+                    variables: { email, password },
+                });
+
+                if (!data || data?.authenticateUserWithPassword.__typename === "UserAuthenticationWithPasswordFailure") {
+                    throw new Error("Invalid credentials");
                 }
 
-                const users = [
-                    {
-                        id: "1",
-                        name: "John Doe",
-                        email: "john@example.com",
-                        password: bcrypt.hashSync("password123", 10),
-                    },
-                ];
-
-                // Find user
-                const user = users.find((u) => u.email === credentials.email);
-                if (!user) {
-                    throw new Error("No user found");
-                }
-
-                // Validate password
-                const isValid = await bcrypt.compare(credentials.password, user.password);
-                if (!isValid) {
-                    throw new Error("Invalid password");
-                }
-
-                return {id: user.id, name: user.name, email: user.email};
+                // ✅ Return user session data
+                return {
+                    id: data.authenticateUserWithPassword.item.id,
+                    name: data.authenticateUserWithPassword.item.name,
+                    email: data.authenticateUserWithPassword.item.email,
+                    sessionToken: data.authenticateUserWithPassword.sessionToken,
+                };
             },
         }),
     ],
     callbacks: {
+        async jwt({ token, user }) {
+            if (user) {
+                token.id = user.id;
+                token.name = user.name;
+                token.email = user.email;
+                token.sessionToken = user.sessionToken; // ✅ Store Keystone session token
+            }
+            return token;
+        },
         async session({ session, token }) {
             session.user.id = token.sub!;
             return session;
         },
     },
     secret: process.env.NEXTAUTH_SECRET,
+    session: {
+        strategy: "jwt", // ✅ Use JWT for session management
+    },
 };
 
 const handler = NextAuth(authOptions);

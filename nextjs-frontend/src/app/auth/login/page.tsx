@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -12,37 +11,37 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import AuthButton from "@/components/AuthButton";
 import {passwordSchema} from "@/validation/passwordSchema";
+import {loginUser} from "@/app/auth/login/actions";
+import {Loading} from "@/app/global/Loading";
 
-const formSchema = z.object({
+const loginSchema = z.object({
     email: z.string().email(),
     password: passwordSchema
 })
 
 export default function LoginPage() {
+    const [error, setError] = useState("");
     const router = useRouter();
     const [isSigningIn, setIsSigningIn] = useState(false);
 
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
+    const form = useForm<z.infer<typeof loginSchema>>({
+        resolver: zodResolver(loginSchema),
         defaultValues: {
             email: '',
             password: '',
         }
     })
 
-    async function handleSubmit(values: { email: string; password: string }) {
-        setIsSigningIn(true);
+    async function handleLogin(values: z.infer<typeof loginSchema>) {
+        setIsSigningIn(true)
+        setError(null);
+        const res = await loginUser(values.email, values.password);
 
-        const result = await signIn("credentials", {
-            email: values.email,
-            password: values.password,
-            redirect: false,
-        });
-
-        if (result?.error) {
-            form.setError("password", { message: result.error });
-            setIsSigningIn(false);
+        if (res?.error) {
+            setError(res.error);
+            setIsSigningIn(false)
         } else {
+            // ✅ Redirect User to Dashboard
             router.push("/dashboard");
         }
     }
@@ -51,13 +50,16 @@ export default function LoginPage() {
         <div className="flex flex-col items-center justify-center min-h-screen p-6 bg-gray-100">
             <h1 className="text-3xl font-bold mb-6">Sign In</h1>
 
-            <Card className="w-full max-w-md">
+            <Card className={`w-full max-w-md ${isSigningIn? "opacity-70" : ""}`}>
                 <CardHeader>
                     <CardTitle>Login</CardTitle>
                 </CardHeader>
                 <CardContent>
+                    {isSigningIn && <Loading />}
+                    {error && <p className="text-red-500">{error}</p>}
+
                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+                        <form onSubmit={form.handleSubmit(handleLogin)} className="space-y-4">
                             <FormField
                                 control={form.control}
                                 name="email"

@@ -5,56 +5,63 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import bcrypt from "bcryptjs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import {registerUser} from "@/app/auth/register/actions";
 import {passwordMatchSchema} from "@/validation/passwordMatchSchema";
+import {Loading} from "@/app/global/Loading";
 
-const formSchema = z.object({
+const registerSchema = z.object({
     name: z.string().min(2, "Name must be at least 2 characters"),
     email: z.string().email("Invalid email address"),
 }).and(passwordMatchSchema)
 
 export default function RegisterPage() {
+    const [error, setError] = useState<string | null>(null);
     const router = useRouter();
-    const [success, setSuccess] = useState<string | null>(null);
+    const [isRegistering, setIsRegistering] = useState(false);
 
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
+    const form = useForm<z.infer<typeof registerSchema>>({
+        resolver: zodResolver(registerSchema),
         defaultValues: {
+            name: '',
             email: '',
             password: '',
             confirmPassword: ''
         }
-    })
+    });
 
-    async function handleRegister(values: { name: string; email: string; password: string }) {
-        setSuccess(null);
+    async function handleRegister(values) {
+        setError(null);
+        setIsRegistering(true)
 
-        // Mock saving user (Replace with real API call)
-        const hashedPassword = await bcrypt.hash(values.password, 10);
-        console.log("Saving user:", { name: values.name, email: values.email, hashedPassword });
+        const res = await registerUser(values.name, values.email, values.password, values.confirmPassword);
 
-        setSuccess("Account created! Redirecting...");
-        setTimeout(() => router.push("/"), 2000);
+        if (res?.error) {
+            console.log("❌ Registration failed:", res.error);
+            setError(res.error);
+            setIsRegistering(false)
+        } else {
+            setTimeout(() => router.push("/"), 1000);
+        }
     }
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen p-6 bg-gray-100">
             <h1 className="text-3xl font-bold mb-6">Create an Account</h1>
 
-            <Card className="w-full max-w-md">
+            <Card className={`w-full max-w-md ${isRegistering? "opacity-70" : ""}`}>
                 <CardHeader>
                     <CardTitle>Register</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    {success && <p className="text-green-500 mb-2">{success}</p>}
+                    {isRegistering && <Loading />}
+                    {error && <p className="text-red-500">{error}</p>}
 
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(handleRegister)} className="space-y-4">
-                            {/* Name Field */}
                             <FormField
                                 control={form.control}
                                 name="name"
@@ -69,7 +76,6 @@ export default function RegisterPage() {
                                 )}
                             />
 
-                            {/* Email Field */}
                             <FormField
                                 control={form.control}
                                 name="email"
@@ -84,7 +90,6 @@ export default function RegisterPage() {
                                 )}
                             />
 
-                            {/* Password Field */}
                             <FormField
                                 control={form.control}
                                 name="password"
@@ -99,7 +104,6 @@ export default function RegisterPage() {
                                 )}
                             />
 
-                            {/* Confirm Password Field */}
                             <FormField
                                 control={form.control}
                                 name="confirmPassword"
@@ -114,7 +118,7 @@ export default function RegisterPage() {
                                 )}
                             />
 
-                            <Button type="submit" className="w-full">
+                            <Button type="submit" disabled={isRegistering} className="w-full">
                                 Register
                             </Button>
                         </form>
