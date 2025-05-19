@@ -9,9 +9,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import {registerUser} from "@/app/auth/register/actions";
 import {passwordMatchSchema} from "@/validation/passwordMatchSchema";
 import {Loading} from "@/app/global/Loading";
+import {registerUser} from "@/app/auth/register/actions";
 
 const registerSchema = z.object({
     name: z.string().min(2, "Name must be at least 2 characters"),

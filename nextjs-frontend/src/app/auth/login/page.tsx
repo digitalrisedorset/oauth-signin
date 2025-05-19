@@ -11,7 +11,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import AuthButton from "@/components/AuthButton";
 import {passwordSchema} from "@/validation/passwordSchema";
-import {loginUser} from "@/app/auth/login/actions";
 import {Loading} from "@/app/global/Loading";
 
 const loginSchema = z.object({
@@ -35,9 +34,16 @@ export default function LoginPage() {
     async function handleLogin(values: z.infer<typeof loginSchema>) {
         setIsSigningIn(true)
         setError(null);
-        const res = await loginUser(values.email, values.password);
 
-        if (res?.error) {
+        const res = await fetch('/api/login-with-credentials', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(values),
+        });
+
+        if (!res?.success) {
             setError(res.error);
             setIsSigningIn(false)
         } else {

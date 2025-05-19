@@ -1,9 +1,9 @@
 "use server";
 
 import { gql } from "@apollo/client";
-import { createApolloClient } from "@/lib/apolloClient";
 import { z } from "zod";
 import { passwordMatchSchema } from "@/validation/passwordMatchSchema";
+import {apolloClient} from "@/lib/apolloClient";
 
 const REGISTER_MUTATION = gql`
   mutation RegisterUser($data: UserCreateInput!) {
@@ -36,7 +36,7 @@ export async function registerUser(name: string, email: string, password: string
     }
 
     try {
-        const client = createApolloClient();
+        const client = apolloClient;
 
         const existingUser = await client.query({
             query: CHECK_USER_QUERY,

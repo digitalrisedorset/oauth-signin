@@ -1,15 +1,19 @@
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { redirect } from "next/navigation";
+'use client';
 
-export default async function DashboardPage() {
-    const session = await getServerSession(authOptions);
+import { redirect } from 'next/navigation';
+import { useUserState } from '@/state/UserState';
+import { useEffect } from 'react';
 
-    console.log("🛠️ Debugging Session:", session); // ✅ Debugging session data
+export default function DashboardPage() {
+    const { user } = useUserState();
 
-    if (!session || !session.user) {
-        redirect("/auth/login");
-    }
+    useEffect(() => {
+        if (!user) {
+            redirect('/auth/login');
+        }
+    }, [user]);
 
-    return <h1>Welcome {session.user.name}!</h1>;
+    if (!user) return null; // avoid flicker
+
+    return <h1>Welcome {user.name}!</h1>;
 }

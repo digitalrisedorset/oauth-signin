@@ -1,17 +1,16 @@
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
+import {useUserState} from "@/state/UserState";
 
 export default async function ProtectedPage() {
-    const session = await getServerSession(authOptions);
+    const {user, refresh} = useUserState()
 
-    if (!session) {
-        redirect("/api/auth/signin");
+    if (!user) {
+        redirect("/auth/login");
     }
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen">
-            <h1 className="text-2xl font-bold">Welcome, {session.user?.name}!</h1>
+            <h1 className="text-2xl font-bold">Welcome, {user?.name}!</h1>
             <p>This is a protected page.</p>
         </div>
     );

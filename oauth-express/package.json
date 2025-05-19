@@ -1,0 +1,36 @@
+{
+  "name": "oauth-express-backend",
+  "version": "1.0.0",
+  "description": "hey dude",
+  "main": "build/index.js",
+  "scripts": {
+    "start:build": "npx tsc -w",
+    "start:run": "nodemon build/index.js",
+    "start": "concurrently npm:start:*",
+    "debug": "nodemon build/index.js",
+    "cron": "nodemon build/cron.js",
+    "docker:build": "docker build -t import-attribute-node-backend:latest-dev .",
+    "docker:run": "docker run -p 3000:3000 -v ./:/user/src/app --name node_backend import-attribute-node-backend:latest-dev",
+    "docker:stop": "docker stop node_backend"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "jsonwebtoken": "^9.0.2",
+    "passport": "^0.6.0",
+    "passport-google-oauth20": "^2.0.0",
+    "passport-local": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.1",
+    "@types/express-session": "^1.18.1",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/passport": "^1.0.17",
+    "@types/passport-google-oauth20": "^2.0.16",
+    "@types/passport-local": "^1.0.38",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.8.3"
+  }
+}

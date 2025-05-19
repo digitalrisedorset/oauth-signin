@@ -1,22 +1,41 @@
 "use client";
 
-import { useSession, signIn, signOut } from "next-auth/react";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {Button} from "@/components/ui/button";
+import {apolloClient} from "@/lib/apolloClient";
+import {useRouter} from "next/navigation";
+import {useUserState} from "@/state/UserState";
+import {useState} from "react";
 
 export default function AuthButton() {
-    const { data: session } = useSession();
+    const [loading, setLoading] = useState(false);
+    const {user, refresh} = useUserState()
+    const router = useRouter();
+
+    const handleSignout = async () => {
+        setLoading(true);
+        await fetch('/api/logout');
+        await apolloClient.clearStore();
+        await refresh();
+        router.push('/');
+        setLoading(false);
+    };
+
+    const handleLogin = (e) => {
+        e.preventDefault()
+        window.location.href = '/api/login';
+    };
 
     return (
         <Card className="w-full">
-            {session ? (
+            {user ? (
                 <>
                     <CardHeader>
-                        <CardTitle>{session.user?.name}</CardTitle>
+                        <CardTitle>{user?.name}</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <Button
-                            onClick={() => signOut()}
+                            onClick={handleSignout}
                             className="w-full bg-red-500 hover:bg-red-600"
                         >
                             Sign Out
@@ -30,7 +49,7 @@ export default function AuthButton() {
                     </CardHeader>
                     <CardContent>
                         <Button
-                            onClick={() => signIn("google")}
+                            onClick={handleLogin}
                             className="w-full bg-red-500 hover:bg-red-600"
                         >
                             Sign In with Google

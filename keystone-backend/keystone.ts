@@ -14,38 +14,43 @@ import { lists } from './schema'
 // when you write your list-level access control functions, as they typically rely on session data
 import { withAuth, session } from './auth'
 import {limiter} from "./rate-limiter";
+import {extendGraphqlSchema} from "./schema/User";
+
+const dotenv = require('dotenv');
+dotenv.config();
 
 export default withAuth(
   config({
       server: {
-          cors: { origin: [process.env.FRONTEND_HOST], credentials: true },
-          port: 3000,
+          cors: { origin: [process.env.FRONTEND_HOST, process.env.OAUTH_HOST], credentials: true },
+          port: process.env.BACKEND_PORT,
           maxFileSize: 200 * 1024 * 1024,
-          extendExpressApp: (app) => {
-              //app.use("/api/graphql", limiter); // Apply rate limiter to API*/
-
-              // 🔹 Reset Rate Limits (For Testing)
-              // app.get("/reset-rate-limit", (req, res) => {
-              //     limiter.resetKey(req.ip); // ✅ Reset limit for current IP
-              //     res.send("✅ Rate limit reset for your IP!");
-              // });
-
-              app.use((req, res, next) => {
-                  const allowedIPs = [process.env.ALLOWED_IPS]; // ✅ Replace with your actual IPs
-                  const clientIP = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
-
-                  if (!allowedIPs.includes(clientIP)) {
-                      return res.status(403).send("Access Denied: Unauthorized IP Address");
-                  }
-
-                  console.log(`🔍 API Request: ${req.method} ${req.path}`);
-                  next();
-              });
-          },
+          // extendExpressApp: (app) => {
+          //     //app.use("/api/graphql", limiter); // Apply rate limiter to API*/
+          //
+          //     // 🔹 Reset Rate Limits (For Testing)
+          //     // app.get("/reset-rate-limit", (req, res) => {
+          //     //     limiter.resetKey(req.ip); // ✅ Reset limit for current IP
+          //     //     res.send("✅ Rate limit reset for your IP!");
+          //     // });
+          //
+          //     app.use((req, res, next) => {
+          //         const allowedIPs = [process.env.ALLOWED_IPS]; // ✅ Replace with your actual IPs
+          //         const clientIP = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+          //
+          //         if (!allowedIPs.includes(clientIP)) {
+          //             return res.status(403).send("Access Denied: Unauthorized IP Address");
+          //         }
+          //
+          //         console.log(`🔍 API Request: ${req.method} ${req.path}`);
+          //         next();
+          //     });
+          // },
       },
       graphql: {
           playground: process.env.NODE_ENV !== "production", // ❌ Disable Playground in production
           introspection: process.env.NODE_ENV !== "production", // ❌ Prevent schema exposure
+          extendGraphqlSchema,
       },
     db: {
       // we're using sqlite for the fastest startup experience
@@ -56,11 +61,10 @@ export default withAuth(
     },
     lists,
       ui: {
-          /*isAccessAllowed: ()=> true,*/
-          // only admins can view the AdminUI
-          isAccessAllowed: (context) => {
-              return context.session?.data?.isAdmin ?? false
-          },
+          /*isAccessAllowed: () => true // for local dev*/
+          isAccessAllowed: ({ req }) => {
+              return req.headers.authorization === `Bearer ${process.env.KEYSTONE_SERVICE_TOKEN}`;
+          }
       },
     session,
   })

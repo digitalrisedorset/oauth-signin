@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -11,6 +10,8 @@ import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import AuthButton from "@/components/AuthButton";
+import {useUserState} from "@/state/UserState";
+import {apolloClient} from "@/lib/apolloClient";
 
 const formSchema = z.object({
     email: z.string().email("Invalid email address"),
@@ -18,7 +19,7 @@ const formSchema = z.object({
 });
 
 export default function HomePage() {
-    const { data: session } = useSession();
+    const {user, refresh} = useUserState()
     const router = useRouter();
     const [isSigningIn, setIsSigningIn] = useState(false);
 
@@ -30,16 +31,24 @@ export default function HomePage() {
     async function handleSubmit(values: { email: string; password: string }) {
         setIsSigningIn(true);
 
-        const result = await signIn("credentials", {
-            email: values.email,
-            password: values.password,
-            redirect: false,
+        const result = await fetch('/api/login-with-credentials', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: values.email,
+                password: values.password,
+            }),
         });
 
-        if (result?.error) {
-            form.setError("password", { message: result.error });
+        const res = await result.json()
+
+        if (!res?.success) {
+            form.setError("password", { message: res.error });
             setIsSigningIn(false);
         } else {
+            refresh()
             router.push("/dashboard");
         }
     }
