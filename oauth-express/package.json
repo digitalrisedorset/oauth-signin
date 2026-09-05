@@ -4,7 +4,7 @@
   "description": "hey dude",
   "main": "build/index.js",
   "scripts": {
-    "start:build": "tsc -w",
+    "build": "tsc",
     "start:run": "nodemon build/index.js",
     "start:prod": "node build/index.js",
     "start": "concurrently \"npm run start:build\" \"npm run start:run\"",
