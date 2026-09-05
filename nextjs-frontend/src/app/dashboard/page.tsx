@@ -3,17 +3,24 @@
 import { redirect } from 'next/navigation';
 import { useUserState } from '@/state/UserState';
 import { useEffect } from 'react';
+import Header from "@/components/common/Header";
+import Main from "@/components/common/Main";
+import Usp from "@/components/reactedge/Usp";
 
 export default function DashboardPage() {
     const { user } = useUserState();
 
-    useEffect(() => {
+   useEffect(() => {
         if (!user) {
             redirect('/auth/login');
         }
     }, [user]);
 
-    if (!user) return null; // avoid flicker
+    if (!user) return null;
 
-    return <h1>Welcome {user.name}!</h1>;
+    return <>
+            <Usp />
+            <Header user={user} />
+            <Main />
+        </>
 }
