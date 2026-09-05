@@ -58,6 +58,7 @@ jobs:
             npm ci
             npm run build
 
-            pm2 restart oauth-api || pm2 start npm --name "oauth-api" -- run start
+            pm2 delete oauth-api || true
+            pm2 start npm --name oauth-api -- run start:prod
             pm2 save
           EOF

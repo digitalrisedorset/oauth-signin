@@ -4,9 +4,10 @@
   "description": "hey dude",
   "main": "build/index.js",
   "scripts": {
-    "start:build": "npx tsc -w",
+    "start:build": "tsc -w",
     "start:run": "nodemon build/index.js",
-    "start": "concurrently npm:start:*",
+    "start:prod": "node build/index.js",
+    "start": "concurrently \"npm run start:build\" \"npm run start:run\"",
     "debug": "nodemon build/index.js",
     "cron": "nodemon build/cron.js",
     "docker:build": "docker build -t import-attribute-node-backend:latest-dev .",
