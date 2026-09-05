@@ -1,0 +1,62 @@
+name: Publish Keystone
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    environment: reactedge
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.WIDGET_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+
+          if [ -z "${{ secrets.WIDGET_SSH_HOST }}" ]; then
+            echo "ERROR: WIDGET_SSH_HOST not set"
+            exit 1
+          fi
+
+          ssh-keyscan -H "${{ secrets.WIDGET_SSH_HOST }}" >> ~/.ssh/known_hosts
+
+      - name: Sync Keystone
+        run: |
+          rsync -avz \
+            --exclude ".git" \
+            --exclude ".github" \
+            --exclude ".env" \
+            --exclude "node_modules" \
+            --exclude ".keystone" \
+            --exclude "keystone.db" \
+            --exclude "prisma" \
+            ./keystone-backend/ \
+            ${{ secrets.WIDGET_SSH_USER }}@${{ secrets.WIDGET_SSH_HOST }}:/var/www/keystone/
+
+      - name: Install and restart Keystone
+        run: |
+          ssh ${{ secrets.WIDGET_SSH_USER }}@${{ secrets.WIDGET_SSH_HOST }} << 'EOF'
+            cd /var/www/keystone
+
+            npm ci
+            echo "▶ Building Keystone"  
+            npm run build
+            pm2 delete keystone || true  
+          
+            echo "▶ Starting Keystone"            
+            pm2 start npm --name "keystone" -- run start
+            pm2 save
+          EOF
