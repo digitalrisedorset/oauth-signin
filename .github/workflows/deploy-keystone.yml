@@ -35,28 +35,13 @@ jobs:
 
       - name: Sync Keystone
         run: |
-          rsync -avz \
-            --exclude ".git" \
-            --exclude ".github" \
-            --exclude ".env" \
-            --exclude "node_modules" \
-            --exclude ".keystone" \
-            --exclude "keystone.db" \
-            --exclude "prisma" \
+          rsync -arvgot --delete \
+            --exclude="node_modules" \
+            --exclude=".keystone" \
+            --exclude=".idea" \
+            --exclude=".vscode" \
+            --exclude=".env" \
+            --exclude=".env.*" \
+            --exclude="README*" \
             ./keystone-backend/ \
             ${{ secrets.WIDGET_SSH_USER }}@${{ secrets.WIDGET_SSH_HOST }}:/var/www/keystone/
-
-      - name: Install and restart Keystone
-        run: |
-          ssh ${{ secrets.WIDGET_SSH_USER }}@${{ secrets.WIDGET_SSH_HOST }} << 'EOF'
-            cd /var/www/keystone
-
-            npm ci
-            echo "▶ Building Keystone"  
-            npm run build
-            pm2 delete keystone || true  
-          
-            echo "▶ Starting Keystone"            
-            pm2 start npm --name "keystone" -- run start
-            pm2 save
-          EOF
