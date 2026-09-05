@@ -1,0 +1,15 @@
+{
+  "integrations": {
+    "magentoGraphql": {
+      "api": "https://mageos-docker.magsite.co.uk/graphql"
+    },
+    "googleMaps": {
+      "apiKey": "AIzaSyBXDMg2bxjoLBCi7HwS_3WyHpYYOcjX3iY",
+      "placeId": "ChIJF3wtymMX1I0RlV-deLj6JSE"
+    }
+  },
+  "context": {
+    "storeCode": "default",
+    "sku": "WJ12"
+  }
+}

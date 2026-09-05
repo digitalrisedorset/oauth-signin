@@ -1,0 +1,19 @@
+{
+  "id": "editorword",
+  "widget": "editorword",
+  "src": "widget-editorword@zwmMxb9VftcNbG5Ce6JbNZciO2VEzpWYfe2_A-Vv2wk.iife.js",
+  "ssr": {
+    "views": {},
+    "css": null,
+    "strategy": "disabled"
+  },
+  "contract": {
+    "data": {
+      "title": "Document Editor"
+    },
+    "settings": {
+      "colour": "#333"
+    }
+  },
+  "contractFile": "default.json"
+}

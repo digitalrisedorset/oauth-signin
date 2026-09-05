@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 3001",
     "lint": "next lint",
     "test": "jest --verbose | tee jest-output.log"
   },
@@ -13,6 +13,7 @@
     "@apollo/client": "^3.13.4",
     "@hookform/resolvers": "^4.1.3",
     "@radix-ui/react-label": "^2.1.2",
+    "@radix-ui/react-select": "^2.2.6",
     "@radix-ui/react-slot": "^1.1.2",
     "@radix-ui/react-toast": "^1.2.6",
     "bcrypt": "^5.1.1",
@@ -24,7 +25,7 @@
     "graphql": "^16.10.0",
     "iron-session": "^8.0.4",
     "lucide-react": "^0.479.0",
-    "next": "15.2.1",
+    "next": "^15.5.21",
     "next-auth": "^4.24.11",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -36,6 +37,9 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@reactedge/widget-editorword": "file:../reactedge/release/source/editorword/",
+    "@reactedge/widget-megamenu": "file:../reactedge/release/source/megamenu/",
+    "@reactedge/widget-usp": "file:../reactedge/release/source/usp/",
     "@tailwindcss/postcss": "^4",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",

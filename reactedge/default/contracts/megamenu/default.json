@@ -1,0 +1,16 @@
+{
+  "runtime": {
+    "platform": "magento"
+  },
+  "data": {
+    "items": []
+  },
+  "settings": {
+    "theme": {
+      "urlSuffix": ".html",
+      "dropdownLayouts": {
+        "/gear": "tiles"
+      }
+    }
+  }
+}

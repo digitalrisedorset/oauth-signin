@@ -1,0 +1,41 @@
+{
+  "productgallery": {
+    "active": true,
+    "contract": "default.json",
+    "ssr": {
+      "strategy": "dynamic"
+    }
+  },
+  "megamenu": {
+    "active": true,
+    "contract": "default.json",
+    "ssr": {
+      "strategy": "dynamic"
+    }
+  },
+  "usp": {
+    "active": true,
+    "contract": "editor.json",
+    "ssr": {
+      "strategy": "static",
+      "variants": [
+        "desktop",
+        "mobile"
+      ]
+    }
+  },
+  "intentdiscovery": {
+    "active": true,
+    "contract": "default.json",
+    "ssr": {
+      "strategy": "dynamic"
+    }
+  },
+  "editorword": {
+    "active": true,
+    "contract": "default.json",
+    "ssr": {
+      "strategy": "disabled"
+    }
+  }
+}

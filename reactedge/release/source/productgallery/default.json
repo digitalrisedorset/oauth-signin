@@ -1,0 +1,12 @@
+{
+  "data": {
+    "images": [],
+    "settings": {
+      "mode": "tile",
+      "maxColumns": 2
+    }
+  },
+  "integration": {
+    "requires": ["magentoGraphql"]
+  }
+}
