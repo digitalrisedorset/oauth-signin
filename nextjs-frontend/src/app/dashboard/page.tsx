@@ -10,13 +10,15 @@ import Usp from "@/components/reactedge/Usp";
 export default function DashboardPage() {
     const { user } = useUserState();
 
-   useEffect(() => {
-        if (!user) {
+    useEffect(() => {
+        if (user === null) {
             redirect('/auth/login');
         }
-    }, [user]);
+    }, [user, redirect]);
 
-    if (!user) return null;
+    if (user === null) {
+        return null; // redirecting
+    }
 
     return <>
             <Usp />

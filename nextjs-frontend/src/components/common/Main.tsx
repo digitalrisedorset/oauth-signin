@@ -1,6 +1,5 @@
 import {useEffect, useRef} from "react";
 import {RuntimeConfigBuilder} from "@/reactedge/Model/RuntimeConfig/RuntimeConfigBuilder";
-import { Widget as EditorWordWidget } from "@reactedge/widget-editorword";
 import {useWidgetManifest} from "@/reactedge/hooks/useWidgetManifest";
 
 export default function Main() {
@@ -18,11 +17,18 @@ export default function Main() {
             return;
         }
 
-        EditorWordWidget({
-            container,
-            contract: editorWordManifest.contract,
-            runtime: runtimeConfig,
-        });
+        const mount = async () => {
+            const { Widget: EditorWordWidget } =
+                await import("@reactedge/widget-editorword");
+
+            EditorWordWidget({
+                container,
+                contract: editorWordManifest.contract,
+                runtime: runtimeConfig,
+            });
+        };
+
+        void mount();
     }, [editorWordManifest]);
 
     return <div className="m-5">

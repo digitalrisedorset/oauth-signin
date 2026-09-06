@@ -11,15 +11,14 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import AuthButton from "@/components/AuthButton";
 import {useUserState} from "@/state/UserState";
-import { WidgetComponent as UspWidget } from "@reactedge/widget-usp";
 
 const formSchema = z.object({
     email: z.string().email("Invalid email address"),
     password: z.string().min(6, "Password must be at least 6 characters long"),
 });
 
-export default function HomePage({ uspManifest }) {
-    const {user, refresh} = useUserState()
+export default function HomePage() {
+    const {refresh} = useUserState()
     const router = useRouter();
     const [isSigningIn, setIsSigningIn] = useState(false);
 
@@ -102,7 +101,7 @@ export default function HomePage({ uspManifest }) {
                         </Form>
 
                         <p className="mt-4 text-sm">
-                            Don't have an account?{" "}
+                            Don&#39;t have an account?{" "}
                             <a href="/auth/register" className="text-blue-600 font-semibold">
                                 Register
                             </a>

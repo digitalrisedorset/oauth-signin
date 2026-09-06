@@ -4,14 +4,15 @@ import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {Button} from "@/components/ui/button";
 import {useUserState} from "@/state/UserState";
 import {useSignOut} from "@/hooks/useSignout";
+import type { MouseEvent } from "react";
 
 export default function AuthButton() {
     const {user} = useUserState()
     const { signOut, loading } = useSignOut();
 
-    const handleLogin = (e) => {
-        e.preventDefault()
-        window.location.href = '/api/login';
+    const handleLogin = (e: MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        window.location.href = "/api/login";
     };
 
     return (

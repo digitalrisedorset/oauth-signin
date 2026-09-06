@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import {useUserState} from "@/state/UserState";
 
 export default async function ProtectedPage() {
-    const {user, refresh} = useUserState()
+    const {user} = useUserState()
 
     if (!user) {
         redirect("/auth/login");
