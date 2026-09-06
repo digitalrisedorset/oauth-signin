@@ -1,14 +1,11 @@
 import { Button } from "@/components/ui/button";
 import {useSignOut} from "@/hooks/useSignout";
+import {UserStateData} from "@/state/UserState";
 
-interface HeaderProps {
-    user: {
-        name: string;
-    };
-}
-
-export default function Header({ user }: HeaderProps) {
+export default function Header({ user }: UserStateData) {
     const { signOut, loading } = useSignOut();
+
+    if (!user) return null;
 
     return (
         <header className="flex h-16 items-center justify-between border-b px-6">

@@ -61,10 +61,10 @@ export default withAuth(
         },
         lists,
         ui: {
-            /*isAccessAllowed: () => true // for local dev*/
-            isAccessAllowed: ({ req }) => {
+            isAccessAllowed: () => true // for local dev
+            /*isAccessAllowed: ({ req }) => {
                 return req.headers.authorization === `Bearer ${process.env.KEYSTONE_SERVICE_TOKEN}`;
-            }
+            }*/
         },
         session,
     })
