@@ -1,0 +1,16 @@
+export class RuntimeConfigBuilder {
+    build(): unknown {
+        return {
+            "integrations": {
+                "magentoGraphql": {
+                    "api": "https://mageos-docker.magsite.co.uk/graphql"
+                }
+            },
+            "context": {
+                "storeCode": "default",
+                "sku": "WJ12",
+                "category": "tops-men"
+            }
+        }
+    }
+}

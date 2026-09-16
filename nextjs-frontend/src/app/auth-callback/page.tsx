@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import {useUserState} from "@/state/UserState";
 import {useRouter} from "next/navigation";
 import {getUrlParam} from "@/lib/query-param";
+import AccessAuthorised from "@/components/common/AccessAuthorised";
 
 export default function AuthCallback() {
     const router = useRouter();
@@ -24,5 +25,5 @@ export default function AuthCallback() {
         }
     }, [token]);
 
-    return <p>Logging in...</p>;
+    return <AccessAuthorised />;
 }

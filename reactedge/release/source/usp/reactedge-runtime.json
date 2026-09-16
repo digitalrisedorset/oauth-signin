@@ -1,0 +1,12 @@
+{
+  "integrations": {
+    "magentoGraphql": {
+      "api": "https://localhost:3001/graphql"
+    }
+  },
+  "context": {
+    "storeCode": "nextjs",
+    "sku": "WJ12",
+    "category": "tops-men"
+  }
+}

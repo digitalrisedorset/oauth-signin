@@ -2,7 +2,7 @@
 import {fetchCookie} from "@/lib/cookie";
 import {NextResponse} from "next/server";
 
-export async function POST(req: Request): Promise<NextResponse> {
+export async function POST(): Promise<NextResponse> {
     try {
         const token = await fetchCookie('token')
 
