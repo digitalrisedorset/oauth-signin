@@ -1,0 +1,54 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+import { Widget as ProductTiledWidget } from "@reactedge/widget-productgallery";
+import { useWidgetManifest } from "@/reactedge/hooks/useWidgetManifest";
+import {RuntimeConfigBuilder} from "@/reactedge/Model/RuntimeConfig/RuntimeConfigBuilder";
+
+type Props = {
+    ssrHtml: string;
+    bootstrap?: unknown;
+};
+
+export function ProductTiledClient({
+      ssrHtml,
+      bootstrap,
+  }: Props) {
+    const widgetRef = useRef<HTMLDivElement>(null);
+    const manifest = useWidgetManifest("productgallery");
+    const runtimeConfig = new RuntimeConfigBuilder().build();
+
+    useEffect(() => {
+        if (
+            !widgetRef.current ||
+            !manifest?.contract
+        ) {
+            return;
+        }
+
+        console.log({
+            container: widgetRef.current,
+                contract: manifest.contract,
+            bootstrap,
+            runtime: runtimeConfig,
+            hydrate: true
+        })
+
+        ProductTiledWidget({
+            container: widgetRef.current,
+            contract: manifest.contract,
+            bootstrap,
+            runtime: runtimeConfig,
+            hydrate: true
+        });
+    }, [manifest, bootstrap]);
+
+    return (
+        <div
+            ref={widgetRef}
+            dangerouslySetInnerHTML={{
+                __html: ssrHtml,
+            }}
+        />
+    );
+}

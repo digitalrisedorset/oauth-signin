@@ -9,12 +9,16 @@ export type SessionUser = {
     name: string;
 };
 
+export interface UserStateData {
+    user: SessionUser | null | undefined;
+}
+
 interface UserState {
-    user: SessionUser | null;
+    user: SessionUser | null | undefined;
     refresh: () => Promise<void>;
 }
 
-const intialState: SessionUser = {
+const intialState: UserStateData = {
     user: undefined
 }
 
@@ -26,7 +30,7 @@ interface UserStateProviderProps {
 }
 
 const UserStateProvider: React.FC<UserStateProviderProps> = ({ children }) => {
-    const [state, setState] = useImmer<UserState>(intialState);
+    const [state, setState] = useImmer<UserStateData>(intialState);
 
     const fetchUser = async () => {
         const res = await fetch('/api/refresh-session', {

@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import {passwordMatchSchema} from "@/validation/passwordMatchSchema";
 import {Loading} from "@/app/global/Loading";
 import {registerUser} from "@/app/auth/register/actions";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 
 const registerSchema = z.object({
     name: z.string().min(2, "Name must be at least 2 characters"),
@@ -84,6 +85,29 @@ export default function RegisterPage() {
                                         <FormLabel>Email</FormLabel>
                                         <FormControl>
                                             <Input type="email" placeholder="Enter your email" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+
+                            <FormField
+                                control={form.control}
+                                name="gender"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Gender</FormLabel>
+                                        <FormControl>
+                                            <Select>
+                                                <SelectTrigger className="w-[180px]">
+                                                    <SelectValue placeholder="Gender" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    <SelectItem value="male">Male</SelectItem>
+                                                    <SelectItem value="female">Female</SelectItem>
+                                                </SelectContent>
+                                            </Select>
+
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>

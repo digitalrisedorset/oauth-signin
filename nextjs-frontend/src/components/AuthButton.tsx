@@ -2,28 +2,17 @@
 
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {Button} from "@/components/ui/button";
-import {apolloClient} from "@/lib/apolloClient";
-import {useRouter} from "next/navigation";
 import {useUserState} from "@/state/UserState";
-import {useState} from "react";
+import {useSignOut} from "@/hooks/useSignout";
+import type { MouseEvent } from "react";
 
 export default function AuthButton() {
-    const [loading, setLoading] = useState(false);
-    const {user, refresh} = useUserState()
-    const router = useRouter();
+    const {user} = useUserState()
+    const { signOut, loading } = useSignOut();
 
-    const handleSignout = async () => {
-        setLoading(true);
-        await fetch('/api/logout');
-        await apolloClient.clearStore();
-        await refresh();
-        router.push('/');
-        setLoading(false);
-    };
-
-    const handleLogin = (e) => {
-        e.preventDefault()
-        window.location.href = '/api/login';
+    const handleLogin = (e: MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        window.location.href = "/api/login";
     };
 
     return (
@@ -35,7 +24,8 @@ export default function AuthButton() {
                     </CardHeader>
                     <CardContent>
                         <Button
-                            onClick={handleSignout}
+                            disabled={loading}
+                            onClick={signOut}
                             className="w-full bg-red-500 hover:bg-red-600"
                         >
                             Sign Out
