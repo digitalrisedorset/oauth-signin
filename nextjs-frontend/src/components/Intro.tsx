@@ -1,10 +1,10 @@
 import {
-    Card,
     CardContent,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 export function ReactEdgeIntro() {
     return (
@@ -23,10 +23,13 @@ export function ReactEdgeIntro() {
                         </p>
                     </div>
 
-                    <img
+                    <Image
                         src="https://www.reactedge.net/wp-content/themes/digitalrisedorset/images/reactedge.webp"
                         alt="ReactEdge"
-                        className="w-full max-w-sm object-contain"
+                        width={384}
+                        height={120}
+                        sizes="(max-width: 768px) 100vw, 384px"
+                        className="h-auto w-full max-w-sm object-contain"
                     />
                 </div>
             </CardHeader>

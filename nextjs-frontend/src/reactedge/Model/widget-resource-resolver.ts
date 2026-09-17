@@ -33,7 +33,7 @@ export class WidgetResourceResolver {
             : undefined;
 
         return {
-            html: artifact?.html,
+            html: artifact?.html || '',
             bootstrap: artifact?.bootstrap,
             css,
         };

@@ -47,3 +47,9 @@ export type SsrVariant =
     | 'desktop'
     | 'mobile'
     | 'tablet';
+
+
+export type WidgetSsrArtifact = {
+    html: string;
+    bootstrap: string;
+};

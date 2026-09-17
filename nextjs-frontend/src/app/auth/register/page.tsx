@@ -13,9 +13,11 @@ import {passwordMatchSchema} from "@/validation/passwordMatchSchema";
 import {Loading} from "@/app/global/Loading";
 import {registerUser} from "@/app/auth/register/actions";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {RegisterFormValues} from "@/app/types";
 
 const registerSchema = z.object({
     name: z.string().min(2, "Name must be at least 2 characters"),
+    gender: z.enum(['female', 'male', 'other']),
     email: z.string().email("Invalid email address"),
 }).and(passwordMatchSchema)
 
@@ -34,7 +36,7 @@ export default function RegisterPage() {
         }
     });
 
-    async function handleRegister(values) {
+    async function handleRegister(values: RegisterFormValues) {
         setError(null);
         setIsRegistering(true)
 
@@ -98,7 +100,10 @@ export default function RegisterPage() {
                                     <FormItem>
                                         <FormLabel>Gender</FormLabel>
                                         <FormControl>
-                                            <Select>
+                                            <Select
+                                                value={field.value}
+                                                onValueChange={field.onChange}
+                                            >
                                                 <SelectTrigger className="w-[180px]">
                                                     <SelectValue placeholder="Gender" />
                                                 </SelectTrigger>

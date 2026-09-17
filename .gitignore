@@ -41,3 +41,6 @@ secret
 temp
 .next
 *.sql
+
+# Generated client
+keystone-backend/generated/

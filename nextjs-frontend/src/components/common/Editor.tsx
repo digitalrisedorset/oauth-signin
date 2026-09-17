@@ -31,7 +31,7 @@ export default function Editor() {
         };
 
         void mount();
-    }, [editorWordManifest]);
+    }, [editorWordManifest, runtimeConfig]);
 
     return <div className="m-5">
         <div ref={editorWordRef}/>

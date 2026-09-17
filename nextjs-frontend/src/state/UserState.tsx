@@ -1,6 +1,6 @@
 "use client"
 
-import {createContext, ReactNode, useContext, useEffect} from "react";
+import {createContext, ReactNode, useCallback, useContext, useEffect} from "react";
 import {useImmer} from "use-immer";
 
 export type SessionUser = {
@@ -32,20 +32,22 @@ interface UserStateProviderProps {
 const UserStateProvider: React.FC<UserStateProviderProps> = ({ children }) => {
     const [state, setState] = useImmer<UserStateData>(intialState);
 
-    const fetchUser = async () => {
+    const fetchUser = useCallback(async () => {
         const res = await fetch('/api/refresh-session', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
         })
         const json = await res.json();
-        setState(draft => { draft.user = json.user || null });
-    };
+
+        setState(draft => {
+            draft.user = json.user ?? null;
+        });
+    }, [setState]);
 
     useEffect(() => {
-        fetchUser();
-    }, []);
-
+        void fetchUser();
+    }, [fetchUser]);
 
     return <LocalStateProvider
         value={{

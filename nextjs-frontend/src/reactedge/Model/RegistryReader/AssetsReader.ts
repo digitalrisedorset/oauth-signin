@@ -1,6 +1,7 @@
 import {cache} from "react";
 import path from "path";
 import {readFile} from "fs/promises";
+import {WidgetSsrArtifact} from "@/reactedge/types";
 
 export class AssetsReader {
     constructor() {}
@@ -35,7 +36,7 @@ export class AssetsReader {
         }
     });
 
-    getWidgetSSR = cache(async (widgetInstanceName: string): Promise<string | undefined> => {
+    getWidgetSSR = cache(async (widgetInstanceName: string): Promise<WidgetSsrArtifact | undefined> => {
         const ssrPath = path.join(
             process.cwd(),
             `../reactedge/nextjs/ssr/${widgetInstanceName}/output.json`

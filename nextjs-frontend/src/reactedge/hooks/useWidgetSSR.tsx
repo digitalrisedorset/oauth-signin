@@ -1,5 +1,4 @@
 import {useEffect, useState} from "react";
-import {WidgetManifest} from "@/reactedge/types";
 
 export function useWidgetSSR(
     widget: string

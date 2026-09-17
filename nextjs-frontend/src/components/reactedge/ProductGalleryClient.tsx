@@ -41,7 +41,7 @@ export function ProductGalleryClient({
             runtime: runtimeConfig,
             hydrate: true
         });
-    }, [manifest, bootstrap]);
+    }, [manifest, bootstrap, runtimeConfig]);
 
     return (
         <div

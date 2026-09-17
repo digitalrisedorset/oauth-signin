@@ -4,16 +4,21 @@ import {WidgetManifest} from "@/reactedge/types";
 export function useWidgetManifest<T>(
     widget: string
 ): WidgetManifest<T> | undefined {
-    const [config, setConfig] = useState<T>();
+    const [manifest, setManifest] = useState<WidgetManifest<T>>();
 
     useEffect(() => {
         let cancelled = false;
 
         fetch(`/api/reactedge/manifests/${widget}`)
-            .then((response) => response.json())
-            .then((config: T) => {
+            .then((response) => response.json()  as Promise<WidgetManifest<T>>)
+            .then((manifest) => {
                 if (!cancelled) {
-                    setConfig(config);
+                    setManifest(manifest);
+                }
+            })
+            .catch(error => {
+                if (!cancelled) {
+                    console.error(error);
                 }
             });
 
@@ -22,5 +27,5 @@ export function useWidgetManifest<T>(
         };
     }, [widget]);
 
-    return config;
+    return manifest;
 }
