@@ -6,6 +6,8 @@
 //   you can find out more at https://keystonejs.com/docs/apis/config
 
 import { config } from '@keystone-6/core'
+import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
+import "dotenv/config";
 
 // to keep this file tidy, we define our schema in a different file
 import { lists } from './schema'
@@ -16,14 +18,18 @@ import { withAuth, session } from './auth'
 import {limiter} from "./rate-limiter";
 import {extendGraphqlSchema} from "./schema/User";
 
-const dotenv = require('dotenv');
-dotenv.config();
+const databaseUrl =
+    process.env.DATABASE_URL ?? "file:./keystone.db";
+
+process.env.DATABASE_URL = databaseUrl;  // required by Prisma
 
 export default withAuth(
     config({
         server: {
             cors: { origin: [process.env.FRONTEND_HOST, process.env.OAUTH_HOST], credentials: true },
-            port: process.env.BACKEND_PORT,
+            port: process.env.BACKEND_PORT
+                ? Number(process.env.BACKEND_PORT)
+                : undefined,
             maxFileSize: 200 * 1024 * 1024,
             // extendExpressApp: (app) => {
             //     //app.use("/api/graphql", limiter); // Apply rate limiter to API*/
@@ -48,23 +54,26 @@ export default withAuth(
             // },
         },
         graphql: {
-            playground: process.env.NODE_ENV !== "production", // ❌ Disable Playground in production
-            introspection: process.env.NODE_ENV !== "production", // ❌ Prevent schema exposure
+            playground: process.env.NODE_ENV !== 'production',
+            apolloConfig: {
+                introspection: process.env.NODE_ENV !== 'production',
+            },
             extendGraphqlSchema,
         },
         db: {
-            // we're using sqlite for the fastest startup experience
-            //   for more information on what database might be appropriate for you
-            //   see https://keystonejs.com/docs/guides/choosing-a-database#title
-            provider: 'sqlite',
-            url: 'file:./keystone.db',
+            provider: "sqlite",
+            prismaClientOptions: () => ({
+                adapter: new PrismaBetterSqlite3({
+                    url: databaseUrl,
+                }),
+            }),
         },
         lists,
         ui: {
-            isAccessAllowed: () => true // for local dev
-            /*isAccessAllowed: ({ req }) => {
+            /*isAccessAllowed: () => true // for local dev*/
+            isAccessAllowed: ({ req }) => {
                 return req.headers.authorization === `Bearer ${process.env.KEYSTONE_SERVICE_TOKEN}`;
-            }*/
+            }
         },
         session,
     })

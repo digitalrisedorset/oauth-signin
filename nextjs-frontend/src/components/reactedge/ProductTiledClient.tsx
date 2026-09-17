@@ -41,7 +41,7 @@ export function ProductTiledClient({
             runtime: runtimeConfig,
             hydrate: true
         });
-    }, [manifest, bootstrap]);
+    }, [manifest, bootstrap, runtimeConfig]);
 
     return (
         <div

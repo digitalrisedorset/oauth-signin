@@ -44,7 +44,9 @@ export default function LoginForm() {
 
     return (
         <div className="flex flex-col items-center min-h-screen p-6">
-            <h1 className="text-3xl font-bold mb-6">The page access is restricted, let's login</h1>
+            <h1 className="mb-6 text-3xl font-bold">
+                The page access is restricted, let’s log in
+            </h1>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-2xl">
                 {/* 🔑 Email/Password Login Form */}

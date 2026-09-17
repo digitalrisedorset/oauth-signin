@@ -10,5 +10,5 @@ export const limiter = rateLimit({
         return 10; // ✅ Normal limit for unauthenticated users
     },
     message: "❌ Too many requests, please try again later.",
-    keyGenerator: (req) => req.ip,
+    keyGenerator: (req) => req.ip ?? 'unknown',
 });

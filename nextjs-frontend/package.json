@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "next dev --webpack",
+    "build": "next build --webpack",
     "start": "next start -p 3001",
-    "lint": "next lint",
+    "lint": "eslint .",
     "test": "jest --verbose | tee jest-output.log"
   },
   "dependencies": {
@@ -24,9 +24,11 @@
     "cookie": "^1.0.2",
     "cookies": "^0.9.1",
     "graphql": "^16.10.0",
+    "html2canvas": "^1.4.1",
     "iron-session": "^8.0.4",
+    "jspdf": "^4.2.1",
     "lucide-react": "^0.479.0",
-    "next": "^15.5.21",
+    "next": "^16.3.5",
     "next-auth": "^4.24.11",
     "radix-ui": "^1.6.7",
     "react": "^19.0.0",
@@ -38,7 +40,6 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3",
     "@reactedge/widget-editorword": "file:../reactedge/release/source/editorword/",
     "@reactedge/widget-megamenu": "file:../reactedge/release/source/megamenu/",
     "@reactedge/widget-productgallery": "file:../reactedge/release/source/productgallery",
@@ -53,7 +54,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "15.2.1",
+    "eslint-config-next": "16.3.5",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "tailwindcss": "^4",
