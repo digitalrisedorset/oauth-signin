@@ -5,12 +5,9 @@
 // If you want to learn more about how lists are configured, please read
 // - https://keystonejs.com/docs/config/lists
 
-import { list } from '@keystone-6/core'
-
 // when using Typescript, you can refine your types to a stricter subset by importing
 // the generated types from '.keystone/types'
-import { type Lists } from '.keystone/types'
-import {User} from "./schema/User";
+import { User } from './schema/User.js'
 
 export type Session = {
   itemId: string
@@ -20,5 +17,5 @@ export type Session = {
 }
 
 export const lists = {
-  User
-} satisfies Lists
+  User,
+}

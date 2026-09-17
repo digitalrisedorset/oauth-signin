@@ -1,0 +1,36 @@
+{
+  "id": "usp",
+  "widget": "usp",
+  "src": "widget-usp@5oCdrQcJyWfoioiUiQ1YNiIPEm2u0QWMavnt-fdqoTE.iife.js",
+  "css": "widget-usp.css",
+  "ssr": {
+    "css": ".reactedge-usp .usp-slider-bar{width:100%;position:relative;overflow:hidden}.reactedge-usp .usp-slider__inner{width:100%;transition:transform .3s;display:flex}.reactedge-usp .usp-slider__inner>*{flex:0 0 100%;justify-content:center;align-items:center;width:100%;height:45px;display:flex}.reactedge-usp .usp-slider-bar .usp-slide__heading{padding-right:1rem}.reactedge-usp .usp-slider-bar .usp-slide__text{line-height:1.5rem}.reactedge-usp .usp-static-bar{text-align:center;justify-content:space-between;align-items:center;height:60px;padding:8px 16px;font-size:14px;display:flex}@media (width<=1200px){.reactedge-usp .usp-static-bar{padding:2rem}}@media (width<=768px){.reactedge-usp .usp-static-bar{flex-flow:column;flex:0 0 100%;justify-content:center;align-items:center;width:100%;height:45px;padding:0;display:flex;overflow:hidden}.reactedge-usp .usp-static-bar [data-usp-slide]{flex-direction:row;align-items:center;gap:2rem;width:100%;min-width:100%;display:flex}.reactedge-usp .usp-static-bar [data-usp-slide] h3{width:50%}}.reactedge-usp .usp-slide{color:inherit}.reactedge-usp .usp-item{flex:1}.reactedge-usp .usp-separator{flex-direction:column;justify-content:center;align-items:center;gap:3px;display:flex}.reactedge-usp .usp-separator span{background:#ccc;border-radius:50%;width:3px;height:3px;display:block}.reactedge-usp .usp-static-bar [data-usp-slide]{text-align:center;width:100%}.reactedge-usp .navigation-arrows{pointer-events:none;justify-content:space-between;align-items:center;display:flex;position:absolute;inset:0}.reactedge-usp .arrow-btn{appearance:none;background:var(--re-usp-arrow-bg,#0000000d);color:var(--re-usp-arrow-color,#2563eb);padding:var(--re-usp-arrow-padding,.5rem);border-radius:var(--re-usp-arrow-radius,999px);cursor:pointer;transition:opacity var(--re-usp-transition,.25s ease);pointer-events:auto;border:none;line-height:1}.reactedge-usp .utton{min-width:0;padding:0}.reactedge-usp .arrow-btn svg{width:var(--re-usp-arrow-size,1.25rem);height:var(--re-usp-arrow-size,1.25rem)}.reactedge-usp .usp-slider-bar.dark,.reactedge-usp .usp-static-bar.dark{--usp-bg:#1f2937;--usp-color:#e5e7eb;--arrow-bg:#374151;--arrow-color:#f9fafb}.reactedge-usp .usp-slider-bar.light,.reactedge-usp .usp-static-bar.light{--usp-bg:#f8fafc;--usp-color:#1e3a8a;--arrow-bg:#e5e7eb;--arrow-color:#374151}.reactedge-usp .usp-slider-bar.promo,.reactedge-usp .usp-static-bar.promo{--usp-bg:linear-gradient(60deg, #f97316, #f5a623);--usp-color:#fff;--arrow-bg:#fff3;--arrow-color:#fff}.reactedge-usp .usp-slider-bar,.reactedge-usp .usp-static-bar{background:var(--usp-bg);color:var(--usp-color)}.reactedge-usp .arrow-btn{background:var(--arrow-bg);color:var(--arrow-color);border-radius:9999px;justify-content:center;align-items:center;width:28px;height:28px;transition:all .2s;display:flex}.reactedge-usp .usp-static-bar{text-align:center;background:#fff;border:1px solid #e5e7eb;border-radius:.5rem;width:100%;display:flex;box-shadow:0 1px 2px #0000000d}.reactedge-usp .usp-static-bar .reactedge-usp .usp-slide{flex:1}.reactedge-usp .usp-static-bar .reactedge-usp .usp-slide__heading{margin:0;font-weight:600}.reactedge-usp .usp-static-bar .reactedge-usp .usp-slide__text{color:#4b5563;margin:.5rem 0 0;font-size:1rem;line-height:1.25rem}\n/*$vite$:1*/",
+    "strategy": "static"
+  },
+  "contract": {
+    "data": {
+      "slides": [
+        {
+          "heading": "🚚 Free Delivery",
+          "text": "On orders over £50"
+        },
+        {
+          "heading": "🔒 Secure Payment",
+          "text": "100% secure checkout"
+        },
+        {
+          "heading": "↩️ Easy Returns",
+          "text": "30-day returns"
+        }
+      ]
+    },
+    "settings": {
+      "mode": {
+        "desktop": "static",
+        "tablet": "slider",
+        "mobile": "slider"
+      }
+    }
+  },
+  "contractFile": "default.json"
+}
