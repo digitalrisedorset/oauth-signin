@@ -3,12 +3,12 @@
 import {Suspense, useEffect, useRef} from 'react';
 import {useUserState} from "@/state/UserState";
 import {useRouter} from "next/navigation";
-import {getUrlParam} from "@/lib/query-param";
+import {useQueryParam} from "@/hooks/useQueryParam";
 import AccessAuthorised from "@/components/common/AccessAuthorised";
 
 function AuthCallbackContent() {
     const router = useRouter();
-    const token = getUrlParam('token');
+    const token = useQueryParam('token');
     const processedToken = useRef<string | null>(null);
     const { refresh } = useUserState();
 
