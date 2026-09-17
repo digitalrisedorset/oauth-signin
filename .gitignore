@@ -42,5 +42,5 @@ temp
 .next
 *.sql
 
-# Generated Prisma client
-keystone-backend/generated/prisma/
+# Generated client
+keystone-backend/generated/
