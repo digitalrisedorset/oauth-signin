@@ -44,4 +44,4 @@ jobs:
             --exclude=".env.*" \
             --exclude="README*" \
             ./keystone-backend/ \
-            ${{ secrets.WIDGET_SSH_USER }}@${{ secrets.WIDGET_SSH_HOST }}:/var/www/keystone/
+            ${{ secrets.WIDGET_SSH_USER }}@${{ secrets.WIDGET_SSH_HOST }}:/var/www/nextjsdemo/keystone/

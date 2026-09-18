@@ -7,7 +7,7 @@
     "build": "tsc",
     "start:run": "nodemon build/index.js",
     "start:prod": "node build/index.js",
-    "start": "concurrently \"npm run start:build\" \"npm run start:run\"",
+    "start": "concurrently \"npm run build\" \"npm run start:run\"",
     "debug": "nodemon build/index.js",
     "cron": "nodemon build/cron.js",
     "docker:build": "docker build -t import-attribute-node-backend:latest-dev .",

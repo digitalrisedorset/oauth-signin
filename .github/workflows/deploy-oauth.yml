@@ -48,12 +48,12 @@ jobs:
             --exclude "node_modules" \
             --exclude "build" \
             ./oauth-express/ \
-            ${{ secrets.WIDGET_SSH_USER }}@${{ secrets.WIDGET_SSH_HOST }}:/var/www/oauth-api/
+            ${{ secrets.WIDGET_SSH_USER }}@${{ secrets.WIDGET_SSH_HOST }}:/var/www/nextjsdemo/oauth-api/
 
       - name: Install and restart OAuth API
         run: |
           ssh ${{ secrets.WIDGET_SSH_USER }}@${{ secrets.WIDGET_SSH_HOST }} << 'EOF'
-            cd /var/www/oauth-api
+            cd /var/www/nextjsdemo/oauth-api
 
             npm ci
             npm run build

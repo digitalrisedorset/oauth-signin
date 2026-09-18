@@ -5,6 +5,7 @@ import {NextResponse} from "next/server";
 export async function POST(req: Request): Promise<NextResponse> {
     const { email, password } = await req.json();
 
+    console.log('login', process.env.OAUTH_HOST)
     const response = await fetch(`${process.env.OAUTH_HOST}/local/auth`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

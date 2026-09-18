@@ -1,0 +1,67 @@
+name: Publish OAuth API
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    environment: reactedge
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: nextjs-frontend/package-lock.json
+
+      - name: Validate Next.js API
+        working-directory: nextjs-frontend
+        run: |
+          npm ci
+          npm run build
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.WIDGET_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+
+          if [ -z "${{ secrets.WIDGET_SSH_HOST }}" ]; then
+            echo "ERROR: WIDGET_SSH_HOST not set"
+            exit 1
+          fi
+
+          ssh-keyscan -H "${{ secrets.WIDGET_SSH_HOST }}" >> ~/.ssh/known_hosts
+
+      - name: Sync Next.js Demo
+        run: |
+          rsync -avz \
+            --delete \
+            --exclude ".git" \
+            --exclude ".github" \
+            --exclude ".env" \
+            --exclude "node_modules" \
+            --exclude ".next" \
+            ./nextjs-frontend/ \
+            ${{ secrets.WIDGET_SSH_USER }}@${{ secrets.WIDGET_SSH_HOST }}:/var/www/nextjsdemo/nextjs-frontend/
+
+      - name: Install, build and restart Next.js Demo
+        run: |
+          ssh ${{ secrets.WIDGET_SSH_USER }}@${{ secrets.WIDGET_SSH_HOST }} << 'EOF'
+            cd /var/www/nextjsdemo/nextjs-frontend
+
+            npm ci
+            npm run build
+
+            pm2 delete nextjs-frontend || true
+            pm2 start npm --name nextjs-frontend -- run start
+            pm2 save
+          EOF
