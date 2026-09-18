@@ -19,12 +19,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: npm
+          cache-dependency-path: nextjs-frontend/package-lock.json
 
-      - name: Validate OAuth API
-        working-directory: oauth-express
+      - name: Validate Next.js API
+        working-directory: nextjs-frontend
         run: |
           npm ci
-          npx tsc --noEmit
+          npm run build
 
       - name: Setup SSH
         run: |
@@ -39,26 +41,27 @@ jobs:
 
           ssh-keyscan -H "${{ secrets.WIDGET_SSH_HOST }}" >> ~/.ssh/known_hosts
 
-      - name: Sync OAuth API
+      - name: Sync Next.js Demo
         run: |
           rsync -avz \
+            --delete \
             --exclude ".git" \
             --exclude ".github" \
             --exclude ".env" \
             --exclude "node_modules" \
-            --exclude "build" \
-            ./oauth-express/ \
-            ${{ secrets.WIDGET_SSH_USER }}@${{ secrets.WIDGET_SSH_HOST }}:/var/www/nextjsdemo/oauth-api/
+            --exclude ".next" \
+            ./nextjs-frontend/ \
+            ${{ secrets.WIDGET_SSH_USER }}@${{ secrets.WIDGET_SSH_HOST }}:/var/www/nextjsdemo/nextjs-frontend/
 
-      - name: Install and restart OAuth API
+      - name: Install, build and restart Next.js Demo
         run: |
           ssh ${{ secrets.WIDGET_SSH_USER }}@${{ secrets.WIDGET_SSH_HOST }} << 'EOF'
-            cd /var/www/nextjsdemo/oauth-api
+            cd /var/www/nextjsdemo/nextjs-frontend
 
             npm ci
             npm run build
 
-            pm2 delete oauth-api || true
-            pm2 start npm --name oauth-api -- run start:prod
+            pm2 delete nextjs-frontend || true
+            pm2 start npm --name nextjs-frontend -- run start
             pm2 save
           EOF
