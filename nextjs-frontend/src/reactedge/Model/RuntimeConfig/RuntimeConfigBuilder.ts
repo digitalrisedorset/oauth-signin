@@ -70,7 +70,7 @@ export class RuntimeConfigBuilder {
             integrations: {
                 cmsblockApi: {
                     api: process.env.NEXT_PUBLIC_CMSBLOCK_API_URL
-                        || "http://127.0.0.1:4190"
+                        || "http://127.0.0.1:4191"
                 }
             },
             context: {
