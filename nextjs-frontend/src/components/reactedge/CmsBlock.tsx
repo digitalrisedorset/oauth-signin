@@ -1,6 +1,5 @@
 import ReactEdgeStyles from "@/reactedge/components/ReactEdgeStyles";
 import {WidgetResourceResolver} from "@/reactedge/Model/widget-resource-resolver";
-import {CmsBlockClient} from "@/components/reactedge/CmsBlockClient";
 
 export default async function CmsBlock() {
     const resources = await new WidgetResourceResolver().resolve("cmsblock");
@@ -8,11 +7,9 @@ export default async function CmsBlock() {
     return (
         <>
             <ReactEdgeStyles css={resources.css} />
-            <CmsBlockClient
-                ssrHtml={resources?.html ?? ""}
-                bootstrap={{
-                    ...(resources?.bootstrap ?? {}),
-                    viewOnly: true,
+            <div
+                dangerouslySetInnerHTML={{
+                    __html: resources?.html ?? "",
                 }}
             />
         </>
