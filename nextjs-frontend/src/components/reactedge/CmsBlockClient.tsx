@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { Widget as CmsBlockWidget } from "@reactedge/widget-cmsblock";
 import { useWidgetManifest } from "@/reactedge/hooks/useWidgetManifest";
+import { RuntimeConfigBuilder } from "@/reactedge/Model/RuntimeConfig/RuntimeConfigBuilder";
 
 type Props = {
     ssrHtml: string;
@@ -10,17 +11,18 @@ type Props = {
 };
 
 export function CmsBlockClient({
-      ssrHtml,
-      bootstrap,
-  }: Props) {
+    ssrHtml,
+    bootstrap,
+}: Props) {
     const widgetRef = useRef<HTMLDivElement>(null);
     const manifest = useWidgetManifest("cmsblock");
+    const runtime = useMemo(
+        () => new RuntimeConfigBuilder().buildCmsBlock(),
+        []
+    );
 
     useEffect(() => {
-        if (
-            !widgetRef.current ||
-            !manifest?.contract
-        ) {
+        if (!widgetRef.current || !manifest?.contract) {
             return;
         }
 
@@ -28,9 +30,10 @@ export function CmsBlockClient({
             container: widgetRef.current,
             contract: manifest.contract,
             bootstrap,
+            runtime,
             hydrate: true
         });
-    }, [manifest, bootstrap]);
+    }, [manifest, bootstrap, runtime]);
 
     return (
         <div
