@@ -13,18 +13,22 @@
     "@keystone-6/auth": "^10.0.5",
     "@keystone-6/core": "^8.1.0",
     "@keystone-6/fields-document": "^11.0.5",
-    "@prisma/adapter-better-sqlite3": "7.9.0",
-    "@prisma/client": "7.9.0",
+    "@prisma/adapter-better-sqlite3": "^7.10.0",
+    "@prisma/client": "^7.10.0",
     "axios": "^1.8.2",
     "better-sqlite3": "^12.6.0",
     "dotenv": "^16.5.0",
     "express-rate-limit": "^7.5.0",
     "graphql": "^16.14.2",
     "next": "^16.0.0",
-    "prisma": "7.9.0",
+    "prisma": "^7.10.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "typescript": "^5.5.0"
+  },
+  "overrides": {
+    "deepmerge-ts": "8.0.2",
+    "mysql2": "3.23.1"
   },
   "devDependencies": {
     "@types/better-sqlite3": "^9.6.0",
