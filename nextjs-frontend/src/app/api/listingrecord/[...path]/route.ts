@@ -68,7 +68,7 @@ async function forward(request: Request, context: RouteContext, method: string):
     }
 
     const auth = await requireRole("seller");
-    if (auth.response) return auth.response;
+    if (!auth.ok) return auth.response;
     const user = auth.user;
     const { path: segments } = await context.params;
     const path = segments.join("/");
