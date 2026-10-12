@@ -25,7 +25,7 @@ async function proxy(request: Request, context: RouteContext, method: string): P
     }
     if (!isPublicPublishedRead) {
         const auth = await requireRole("cmseditor");
-        if (auth.response) return auth.response;
+        if (!auth.ok) return auth.response;
     }
 
     try {
