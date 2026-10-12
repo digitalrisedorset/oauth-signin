@@ -3,7 +3,7 @@ import CreateListing from "@/components/common/CreateListing";
 
 export default function SellerListingPage() {
     return (
-        <CheckLogin>
+        <CheckLogin requiredAccess="seller">
             <CreateListing />
         </CheckLogin>
     );
