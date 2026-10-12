@@ -34,6 +34,7 @@ export const User = list({
             type: 'string',
             options: [
                 { label: 'Seller', value: 'seller' },
+                { label: 'CMS Editor', value: 'cmseditor' },
             ],
             defaultValue: [],
         }),
