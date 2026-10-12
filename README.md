@@ -28,10 +28,10 @@ The proxy resolves the HTTP-only OAuth token with OAUTH_HOST on the server for e
 
 Run the services locally on their default ports (CMSBlock 4191, ListingRecord 4180) and set the server-only upstreams in nextjs-frontend/.env.local:
 
-\`\`\`dotenv
+```dotenv
 CMSBLOCK_API_INTERNAL_URL=http://127.0.0.1:4191
 LISTINGRECORD_API_INTERNAL_URL=http://127.0.0.1:4180
-\`\`\`
+```
 
 Production should set the same variables to private service addresses reachable from the Next.js server. Do not expose the service ports publicly or put these upstreams in NEXT_PUBLIC_* variables. CMSBlock and ListingRecord do not provide application authentication themselves.
 
