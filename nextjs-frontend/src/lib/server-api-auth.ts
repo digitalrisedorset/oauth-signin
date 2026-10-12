@@ -10,6 +10,10 @@ type SessionResult =
     | { user: ApiUser | null; unavailable: false }
     | { user: null; unavailable: true };
 
+export type RoleAuthorization =
+    | { ok: true; user: ApiUser }
+    | { ok: false; response: NextResponse };
+
 function isRecord(value: unknown): value is Record<string, unknown> {
     return typeof value === "object" && value !== null && !Array.isArray(value);
 }
@@ -39,7 +43,12 @@ async function getSessionUser(): Promise<SessionResult> {
         if (!isRecord(payload) || payload.user === null || payload.user === undefined) {
             return { user: null, unavailable: false };
         }
-        if (!isRecord(payload.user) || typeof payload.user.id !== "string" || !Array.isArray(payload.user.access)) {
+        if (
+            !isRecord(payload.user) ||
+            typeof payload.user.id !== "string" ||
+            !payload.user.id.trim() ||
+            !Array.isArray(payload.user.access)
+        ) {
             return { user: null, unavailable: true };
         }
 
@@ -50,13 +59,12 @@ async function getSessionUser(): Promise<SessionResult> {
     }
 }
 
-export async function requireRole(role: string): Promise<
-    { user: ApiUser; response?: never } | { user?: never; response: NextResponse }
-> {
+export async function requireRole(role: string): Promise<RoleAuthorization> {
     const session = await getSessionUser();
 
     if (session.unavailable) {
         return {
+            ok: false,
             response: NextResponse.json(
                 { error: "Authentication service is unavailable." },
                 { status: 503, headers: { "Cache-Control": "private, no-store" } },
@@ -65,6 +73,7 @@ export async function requireRole(role: string): Promise<
     }
     if (!session.user) {
         return {
+            ok: false,
             response: NextResponse.json(
                 { error: "Authentication required." },
                 { status: 401, headers: { "Cache-Control": "private, no-store" } },
@@ -73,6 +82,7 @@ export async function requireRole(role: string): Promise<
     }
     if (!session.user.access.includes(role)) {
         return {
+            ok: false,
             response: NextResponse.json(
                 { error: "You do not have access to this API." },
                 { status: 403, headers: { "Cache-Control": "private, no-store" } },
@@ -80,7 +90,7 @@ export async function requireRole(role: string): Promise<
         };
     }
 
-    return { user: session.user };
+    return { ok: true, user: session.user };
 }
 
 /** Mutations use the app's cookie session, so reject cross-origin browser writes. */
