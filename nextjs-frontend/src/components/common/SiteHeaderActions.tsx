@@ -20,7 +20,7 @@ export default function SiteHeaderActions() {
         return (
             <div className="flex shrink-0 items-center justify-end">
                 <Button asChild variant="link" size="sm">
-                    <a href="/api/login">Sign in</a>
+                    <a href="/auth/login">Sign in</a>
                 </Button>
             </div>
         );
