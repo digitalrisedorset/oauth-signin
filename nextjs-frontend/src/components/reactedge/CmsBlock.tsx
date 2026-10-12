@@ -3,6 +3,7 @@ import {
 } from "@/components/ui/card";
 import ReactEdgeStyles from "@/reactedge/components/ReactEdgeStyles";
 import {WidgetResourceResolver} from "@/reactedge/Model/widget-resource-resolver";
+import { CmsBlockClient } from "@/components/reactedge/CmsBlockClient";
 
 export default async function CmsBlock() {
     const resources = await new WidgetResourceResolver().resolve("cmsblock");
@@ -11,10 +12,9 @@ export default async function CmsBlock() {
         <>
             <ReactEdgeStyles css={resources.css} />
             <CardContent>
-                <div
-                    dangerouslySetInnerHTML={{
-                        __html: resources?.html ?? "",
-                    }}
+                <CmsBlockClient
+                    ssrHtml={resources?.html ?? ""}
+                    bootstrap={resources?.bootstrap}
                 />
             </CardContent>
         </>
