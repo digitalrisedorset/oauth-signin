@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useSignOut } from "@/hooks/useSignout";
 import { useUserState } from "@/state/UserState";
@@ -21,7 +20,7 @@ export default function SiteHeaderActions() {
         return (
             <div className="flex shrink-0 items-center justify-end">
                 <Button asChild variant="link" size="sm">
-                    <Link href="/api/login">Sign in</Link>
+                    <a href="/api/login">Sign in</a>
                 </Button>
             </div>
         );
