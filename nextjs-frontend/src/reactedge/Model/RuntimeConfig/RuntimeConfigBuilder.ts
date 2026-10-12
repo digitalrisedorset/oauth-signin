@@ -26,12 +26,23 @@ export interface ReactEdgeRuntimeConfig {
     };
 }
 
+export interface CmsBlockRuntimeConfig {
+    readonly integrations: {
+        readonly cmsblockApi: { readonly api: string };
+    };
+    readonly context: {
+        readonly storeCode: string;
+        readonly sku: string;
+        readonly category: string;
+    };
+}
+
 export class RuntimeConfigBuilder {
     build(user: ReactEdgeRuntimeUser | null = null): ReactEdgeRuntimeConfig {
         return {
             integrations: {
                 magentoGraphql: {
-                    api: `${process.env.MAGENTO_URL}/graphql`
+                    api: String(process.env.NEXT_PUBLIC_MAGENTO_URL) + "/graphql"
                 }
             },
             context: {
@@ -51,6 +62,22 @@ export class RuntimeConfigBuilder {
                     access: user.access.filter(access => access === 'seller')
                 }
             } : {})
+        };
+    }
+
+    buildCmsBlock(): CmsBlockRuntimeConfig {
+        return {
+            integrations: {
+                cmsblockApi: {
+                    api: process.env.NEXT_PUBLIC_CMSBLOCK_API_URL
+                        || "http://127.0.0.1:4190"
+                }
+            },
+            context: {
+                storeCode: "nextjs",
+                sku: "WJ12",
+                category: "tops-men"
+            }
         };
     }
 }

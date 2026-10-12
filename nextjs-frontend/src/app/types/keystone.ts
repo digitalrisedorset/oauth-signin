@@ -1,4 +1,4 @@
-export type UserAccess = 'seller';
+export type UserAccess = 'seller' | 'cmseditor';
 
 export interface UserInformation {
     id: string

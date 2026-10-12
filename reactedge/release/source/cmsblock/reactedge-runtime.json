@@ -1,0 +1,12 @@
+{
+  "integrations": {
+    "cmsblockApi": {
+      "api": "http://127.0.0.1:4190"
+    }
+  },
+  "context": {
+    "storeCode": "nextjs",
+    "sku": "WJ12",
+    "category": "tops-men"
+  }
+}

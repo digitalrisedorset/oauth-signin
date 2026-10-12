@@ -47,7 +47,7 @@ const UserStateProvider: React.FC<UserStateProviderProps> = ({ children }) => {
         setState(draft => {
             draft.user = user
                 ? { ...user, access: Array.isArray(user.access)
-                    ? user.access.filter((access): access is UserAccess => access === 'seller')
+                    ? user.access.filter((access): access is UserAccess => access === 'seller' || access === 'cmseditor')
                     : [] }
                 : null;
         });

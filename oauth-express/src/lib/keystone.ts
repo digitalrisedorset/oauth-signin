@@ -1,6 +1,6 @@
 import {Profile} from "passport-google-oauth20";
 
-export type UserAccess = 'seller';
+export type UserAccess = 'seller' | 'cmseditor';
 
 export interface KeystoneUser {
     id: string;
