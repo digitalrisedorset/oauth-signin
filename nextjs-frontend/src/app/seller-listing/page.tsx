@@ -1,9 +1,11 @@
 import CheckLogin from "@/components/auth/CheckLogin";
 import CreateListing from "@/components/common/CreateListing";
+import Usp from "@/components/reactedge/Usp";
 
 export default function SellerListingPage() {
     return (
-        <CheckLogin>
+        <CheckLogin requiredAccess="seller">
+            <Usp />
             <CreateListing />
         </CheckLogin>
     );
