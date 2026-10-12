@@ -63,6 +63,11 @@ export const User = list({
             defaultValue: { kind: 'now' },
         }),
     },
+    ui: {
+        listView: {
+            initialColumns: ['name', 'email', 'access'],
+        },
+    },
     hooks: {
         validateInput: async ({ resolvedData, addValidationError }) => {
             if (resolvedData.password && commonPasswords.includes(resolvedData.password.toLowerCase())) {
