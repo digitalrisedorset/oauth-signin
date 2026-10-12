@@ -1,7 +1,7 @@
 {
   "integrations": {
     "cmsblockApi": {
-      "api": "http://127.0.0.1:4191"
+      "api": "http://127.0.0.1:4190"
     }
   },
   "context": {
