@@ -60,6 +60,7 @@ export function CmsBlockClient({
 
     return (
         <div
+            key={isCmsEditor ? "cms-editor" : "cms-view"}
             ref={widgetRef}
             dangerouslySetInnerHTML={{
                 __html: ssrHtml,
