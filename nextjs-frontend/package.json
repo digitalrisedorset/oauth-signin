@@ -51,10 +51,11 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "16.3.5",
     "tailwindcss": "^4",
     "ts-node": "^10.9.2",
     "typescript": "^5",
-    "@reactedge/widget-cmsblock": "file:../reactedge/release/source/cmsblock/"
+    "@reactedge/widget-cmsblock": "file:../reactedge/release/source/cmsblock/",
+    "typescript-eslint": "^8.70.0",
+    "eslint-plugin-react-hooks": "^7.1.1"
   }
 }
