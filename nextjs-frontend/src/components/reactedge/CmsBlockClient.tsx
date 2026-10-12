@@ -23,20 +23,40 @@ export function CmsBlockClient({
         () => new RuntimeConfigBuilder().buildCmsBlock(),
         []
     );
+    const widgetBootstrap = useMemo(() => {
+        if (isCmsEditor) {
+            return undefined;
+        }
+
+        const initialBootstrap =
+            typeof bootstrap === "object" && bootstrap !== null && !Array.isArray(bootstrap)
+                ? bootstrap as Record<string, unknown>
+                : {};
+
+        return {
+            ...initialBootstrap,
+            viewOnly: true,
+        };
+    }, [bootstrap, isCmsEditor]);
+    const viewOnly =
+        typeof widgetBootstrap === "object" &&
+        widgetBootstrap !== null &&
+        "viewOnly" in widgetBootstrap &&
+        widgetBootstrap.viewOnly === true;
 
     useEffect(() => {
-        if (!widgetRef.current || !manifest?.contract) {
+        if (!widgetRef.current || !manifest?.contract || viewOnly) {
             return;
         }
 
         CmsBlockWidget({
             container: widgetRef.current,
             contract: manifest.contract,
-            bootstrap: isCmsEditor ? undefined : bootstrap,
+            bootstrap: widgetBootstrap,
             runtime,
             hydrate: true
         });
-    }, [manifest, bootstrap, runtime, isCmsEditor]);
+    }, [manifest, widgetBootstrap, runtime, viewOnly]);
 
     return (
         <div
