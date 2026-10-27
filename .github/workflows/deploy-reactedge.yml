@@ -1,4 +1,4 @@
-name: Publish NextJS
+name: Publish ReactEdge
 
 on:
   push:
