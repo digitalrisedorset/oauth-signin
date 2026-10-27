@@ -1,39 +1,44 @@
-'use client'
+'use client';
 
-import {useEffect, useRef} from "react";
-import {RuntimeConfigBuilder} from "@/reactedge/Model/RuntimeConfig/RuntimeConfigBuilder";
-import {useWidgetManifest} from "@/reactedge/hooks/useWidgetManifest";
+import { useEffect, useRef } from "react";
+import { useReactEdgeRuntimeConfig } from "@/reactedge/hooks/useReactEdgeRuntimeConfig";
+import { useWidgetManifest } from "@/reactedge/hooks/useWidgetManifest";
 
 export default function Editor() {
     const editorWordRef = useRef<HTMLDivElement>(null);
-
-    const editorWordManifest =
-        useWidgetManifest("editorword");
-
-    const runtimeConfig = new RuntimeConfigBuilder().build();
+    const mounted = useRef(false);
+    const editorWordManifest = useWidgetManifest("editorword");
+    const { runtime, identityReady } = useReactEdgeRuntimeConfig();
 
     useEffect(() => {
         const container = editorWordRef.current;
-
-        if (!container || !editorWordManifest?.contract) {
+        if (!container || !editorWordManifest?.contract || !identityReady || mounted.current) {
             return;
         }
 
+        let active = true;
         const mount = async () => {
             const { Widget: EditorWordWidget } =
                 await import("@reactedge/widget-editorword");
 
+            if (!active || !container.isConnected || mounted.current) return;
+            mounted.current = true;
+
+            // Identity is presentation-only. Protected operations must be
+            // authorised independently using the server-side session.
             EditorWordWidget({
                 container,
                 contract: editorWordManifest.contract,
-                runtime: runtimeConfig,
+                runtime,
             });
         };
 
         void mount();
-    }, [editorWordManifest, runtimeConfig]);
+        return () => { active = false; };
+        // Current widget API has no update/unmount method; only mount once.
+    }, [editorWordManifest, runtime, identityReady]);
 
     return <div className="m-5">
-        <div ref={editorWordRef}/>
-    </div>
+        <div ref={editorWordRef} />
+    </div>;
 }

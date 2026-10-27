@@ -44,3 +44,10 @@ temp
 
 # Generated client
 keystone-backend/generated/
+
+# ReactEdge package entry points
+!reactedge/release/source/**/*.js
+
+# Ignore IIFE build artifacts
+reactedge/release/source/**/*.iife.js
+!reactedge/release/source/**/*.js.map

@@ -2,11 +2,13 @@
 
 import {createContext, ReactNode, useCallback, useContext, useEffect} from "react";
 import {useImmer} from "use-immer";
+import type {UserAccess} from "@/app/types/keystone";
 
 export type SessionUser = {
     id: string;
     email: string;
     name: string;
+    access: UserAccess[];
 };
 
 export interface UserStateData {
@@ -40,13 +42,27 @@ const UserStateProvider: React.FC<UserStateProviderProps> = ({ children }) => {
         })
         const json = await res.json();
 
+        const user = json.user as SessionUser | null | undefined;
+
         setState(draft => {
-            draft.user = json.user ?? null;
+            draft.user = user
+                ? { ...user, access: Array.isArray(user.access)
+                    ? user.access.filter((access): access is UserAccess => access === 'seller' || access === 'cmseditor')
+                    : [] }
+                : null;
         });
     }, [setState]);
 
     useEffect(() => {
         void fetchUser();
+    }, [fetchUser]);
+
+    // Refresh the session after returning to the page to pick up Keystone
+    // access changes. Server-side authorisation must still check fresh access.
+    useEffect(() => {
+        const refreshOnFocus = () => { void fetchUser(); };
+        window.addEventListener('focus', refreshOnFocus);
+        return () => window.removeEventListener('focus', refreshOnFocus);
     }, [fetchUser]);
 
     return <LocalStateProvider

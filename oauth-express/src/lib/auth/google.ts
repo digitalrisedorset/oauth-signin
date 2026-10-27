@@ -20,6 +20,7 @@ export const initGoogleStrategy = (passport: PassportStatic) => {
                     email: keystoneUser.email,
                     name: keystoneUser.name,
                     provider: keystoneUser.provider,
+                    access: keystoneUser.access,
                 };
 
                 done(null, sessionUser);

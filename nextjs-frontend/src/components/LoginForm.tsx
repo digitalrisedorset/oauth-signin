@@ -12,6 +12,7 @@ import {loginWithCredentials} from "@/controllers/authController";
 import {z} from "zod";
 import {useRouter} from "next/navigation";
 import {useUserState} from "@/state/UserState";
+import {loginReturnTo} from "@/lib/loginReturnTo";
 
 const formSchema = z.object({
     email: z.string().email("Invalid email address"),
@@ -37,8 +38,8 @@ export default function LoginForm() {
             form.setError("password", { message: result.error });
             setIsSigningIn(false);
         } else {
-            refresh()
-            router.push("/dashboard");
+            await refresh();
+            router.replace(loginReturnTo());
         }
     }
 

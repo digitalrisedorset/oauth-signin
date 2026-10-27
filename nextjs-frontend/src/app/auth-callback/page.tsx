@@ -5,6 +5,7 @@ import {useUserState} from "@/state/UserState";
 import {useRouter} from "next/navigation";
 import {useQueryParam} from "@/hooks/useQueryParam";
 import AccessAuthorised from "@/components/common/AccessAuthorised";
+import {consumeLoginReturnTo} from "@/lib/loginReturnTo";
 
 function AuthCallbackContent() {
     const router = useRouter();
@@ -35,7 +36,7 @@ function AuthCallbackContent() {
                 }
 
                 await refresh();
-                router.replace('/dashboard');
+                router.replace(consumeLoginReturnTo());
             } catch (error) {
                 processedToken.current = null;
                 console.error("Authentication callback failed:", error);

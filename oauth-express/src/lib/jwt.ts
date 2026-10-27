@@ -7,7 +7,8 @@ export const issueJwt = (user: KeystoneUser): string => {
         id: user.id,
         email: user.email,
         name: user.name,
-        provider: user.provider
+        provider: user.provider,
+        access: user.access
     };
 
     return jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: '7d' });

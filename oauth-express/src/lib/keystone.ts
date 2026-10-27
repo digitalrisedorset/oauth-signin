@@ -1,10 +1,13 @@
 import {Profile} from "passport-google-oauth20";
 
+export type UserAccess = 'seller' | 'cmseditor';
+
 export interface KeystoneUser {
     id: string;
     email: string;
     name: string;
     provider?: 'credentials' | 'google' | 'apple';
+    access: UserAccess[];
 }
 
 type KeystoneUpdateUserResponse = {
@@ -33,7 +36,8 @@ export const createOrUpdateUser = async (profile: Profile) => {
                     id
                     email
                     name
-                    provider  
+                    provider
+                    access
                 }
               }
             `,
@@ -71,7 +75,8 @@ export const getKeystoneUserById = async (id: string) => {
                     id
                     email
                     name
-                    provider 
+                    provider
+                    access
                   }
                 }
             `,
@@ -111,7 +116,8 @@ export async function fetchKeystoneUserByEmailAndPassword(email: string, passwor
                 id
                 email
                 name
-                provider     
+                provider
+                access
               }
             }
             ... on UserAuthenticationWithPasswordFailure {
