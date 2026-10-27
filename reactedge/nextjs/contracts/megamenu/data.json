@@ -34,12 +34,5 @@
         "url": "/word-editor",
         "image": null,
         "children": []
-    },
-    {
-        "id": "seller-listing",
-        "label": "Seller Listing",
-        "url": "/seller-listing",
-        "image": null,
-        "children": []
     }
 ]

@@ -1,7 +1,7 @@
 {
   "integrations": {
     "magentoGraphql": {
-      "api": "http://localhost:3001/graphql"
+      "api": "https://localhost:3001/graphql"
     }
   },
   "context": {

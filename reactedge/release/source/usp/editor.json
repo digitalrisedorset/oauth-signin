@@ -1,0 +1,25 @@
+{
+  "data": {
+    "slides": [
+      {
+        "heading": "\uD83D\uDCDD Flexible Editing",
+        "text": "Create/Edit documents online"
+      },
+      {
+        "heading": "\uD83E\uDDE9 Reusable Content",
+        "text": "Build with reusable blocks"
+      },
+      {
+        "heading": "\uD83D\uDCE4 Multiple Formats",
+        "text": "Import DOCX and export to PDF"
+      }
+    ]
+  },
+  "settings": {
+    "mode": {
+      "desktop": "static",
+      "tablet": "slider",
+      "mobile": "slider"
+    }
+  }
+}

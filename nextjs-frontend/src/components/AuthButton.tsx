@@ -5,7 +5,7 @@ import {Button} from "@/components/ui/button";
 import {useUserState} from "@/state/UserState";
 import {useSignOut} from "@/hooks/useSignout";
 import type { MouseEvent } from "react";
-import {loginReturnTo, rememberLoginReturnTo} from "@/lib/loginReturnTo";
+import {redirect} from "next/navigation";
 
 export default function AuthButton() {
     const {user} = useUserState()
@@ -13,8 +13,7 @@ export default function AuthButton() {
 
     const handleLogin = (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        rememberLoginReturnTo(loginReturnTo());
-        window.location.assign("/api/login");
+        redirect("/api/login");
     };
 
     return (

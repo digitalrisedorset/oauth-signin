@@ -1,0 +1,22 @@
+[
+    {
+        "src": "https://mageos-docker.magsite.co.uk/media/catalog/product/w/p/wp04-blue_main_1.jpg",
+        "alt": "",
+        "role": "base"
+    },
+    {
+        "src": "https://mageos-docker.magsite.co.uk/media/catalog/product/w/p/wp04-blue_alt1_1.jpg",
+        "alt": "",
+        "role": "base"
+    },
+    {
+        "src": "https://mageos-docker.magsite.co.uk/media/catalog/product/w/p/wp04-blue_alternate_1.jpg",
+        "alt": "",
+        "role": "base"
+    },
+    {
+        "src": "https://mageos-docker.magsite.co.uk/media/catalog/product/w/p/wp04-blue_back_1.jpg",
+        "alt": "",
+        "role": "base"
+    }
+]

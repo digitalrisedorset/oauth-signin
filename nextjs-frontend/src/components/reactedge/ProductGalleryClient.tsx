@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { Widget as ProductTiledWidget } from "@reactedge/widget-productgallery";
 import { useWidgetManifest } from "@/reactedge/hooks/useWidgetManifest";
-import {useReactEdgeRuntimeConfig} from "@/reactedge/hooks/useReactEdgeRuntimeConfig";
+import {RuntimeConfigBuilder} from "@/reactedge/Model/RuntimeConfig/RuntimeConfigBuilder";
 
 type Props = {
     ssrHtml: string;
@@ -16,18 +16,24 @@ export function ProductGalleryClient({
   }: Props) {
     const widgetRef = useRef<HTMLDivElement>(null);
     const manifest = useWidgetManifest("productgallery-gallery");
-    const {runtime: runtimeConfig, identityReady} = useReactEdgeRuntimeConfig();
-    const mounted = useRef(false);
+    const runtimeConfig = new RuntimeConfigBuilder().build();
 
     useEffect(() => {
         if (
-            !identityReady || mounted.current || !widgetRef.current ||
+            !widgetRef.current ||
             !manifest?.contract
         ) {
             return;
         }
 
-        mounted.current = true;
+        console.log({
+            container: widgetRef.current,
+                contract: manifest.contract,
+            bootstrap,
+            runtime: runtimeConfig,
+            hydrate: true
+        })
+
         ProductTiledWidget({
             container: widgetRef.current,
             contract: manifest.contract,
@@ -35,9 +41,7 @@ export function ProductGalleryClient({
             runtime: runtimeConfig,
             hydrate: true
         });
-    // Current widget API has no update/unmount; mount once to avoid duplicate
-    // hydrateRoot calls when identity changes on an already-mounted page.
-    }, [manifest, bootstrap, runtimeConfig, identityReady]);
+    }, [manifest, bootstrap, runtimeConfig]);
 
     return (
         <div

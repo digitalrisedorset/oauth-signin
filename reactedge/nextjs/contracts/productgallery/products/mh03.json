@@ -1,0 +1,17 @@
+[
+    {
+        "src": "https://mageos-docker.magsite.co.uk/media/catalog/product/m/h/mh03-black_main_1.jpg",
+        "alt": "",
+        "role": "base"
+    },
+    {
+        "src": "https://mageos-docker.magsite.co.uk/media/catalog/product/m/h/mh03-black_alt1_1.jpg",
+        "alt": "",
+        "role": "base"
+    },
+    {
+        "src": "https://mageos-docker.magsite.co.uk/media/catalog/product/m/h/mh03-black_back_1.jpg",
+        "alt": "",
+        "role": "base"
+    }
+]

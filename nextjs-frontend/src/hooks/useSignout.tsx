@@ -1,20 +1,21 @@
 import {useState} from "react";
+import {useUserState} from "@/state/UserState";
+import {useRouter} from "next/navigation";
+import {apolloClient} from "@/lib/apolloClient";
 
 export function useSignOut() {
     const [loading, setLoading] = useState(false);
+    const { refresh } = useUserState();
+    const router = useRouter();
 
     const signOut = async () => {
         setLoading(true);
 
         try {
-            const response = await fetch("/api/logout");
-            if (!response.ok) {
-                throw new Error("Sign out failed");
-            }
-
-            // A full navigation discards mounted widgets and their in-memory
-            // editor state before the homepage is loaded as a guest.
-            window.location.replace("/");
+            await fetch("/api/logout");
+            await apolloClient.clearStore();
+            await refresh();
+            router.push("/");
         } finally {
             setLoading(false);
         }

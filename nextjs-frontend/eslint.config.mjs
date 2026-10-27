@@ -1,16 +1,11 @@
 import { defineConfig, globalIgnores } from "eslint/config";
-import tseslint from "typescript-eslint";
-import reactHooks from "eslint-plugin-react-hooks";
+import nextVitals from "eslint-config-next/core-web-vitals";
+import nextTypeScript from "eslint-config-next/typescript";
 
 export default defineConfig([
-  ...tseslint.configs.recommended,
-  {
-    plugins: { "react-hooks": reactHooks },
-    rules: {
-      "react-hooks/rules-of-hooks": "error",
-      "react-hooks/exhaustive-deps": "warn",
-    },
-  },
+  ...nextVitals,
+  ...nextTypeScript,
+
   globalIgnores([
     ".next/**",
     "out/**",

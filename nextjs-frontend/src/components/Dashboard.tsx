@@ -1,7 +1,6 @@
 'use client';
 
 import { redirect } from 'next/navigation';
-import {loginUrlForCurrentPage} from '@/lib/loginReturnTo';
 import { useUserState } from '@/state/UserState';
 import { useEffect } from 'react';
 import Header from "@/components/common/Header";
@@ -12,7 +11,7 @@ export default function Dashboard() {
 
     useEffect(() => {
         if (user === null) {
-            redirect(loginUrlForCurrentPage());
+            redirect('/auth/login');
         }
     }, [user]);
 

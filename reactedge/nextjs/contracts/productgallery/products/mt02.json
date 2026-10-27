@@ -1,0 +1,22 @@
+[
+    {
+        "src": "https://mageos-docker.magsite.co.uk/media/catalog/product/m/t/mt02-white_main_2.jpg",
+        "alt": "",
+        "role": "base"
+    },
+    {
+        "src": "https://mageos-docker.magsite.co.uk/media/catalog/product/m/t/mt02-white_alt1_2.jpg",
+        "alt": "",
+        "role": "base"
+    },
+    {
+        "src": "https://mageos-docker.magsite.co.uk/media/catalog/product/m/t/mt02-white_back_2.jpg",
+        "alt": "",
+        "role": "base"
+    },
+    {
+        "src": "https://mageos-docker.magsite.co.uk/media/catalog/product/m/t/mt02-white_sideb_2.jpg",
+        "alt": "",
+        "role": "base"
+    }
+]
