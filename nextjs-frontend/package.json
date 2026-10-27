@@ -27,7 +27,7 @@
     "iron-session": "^8.0.4",
     "jspdf": "^4.2.1",
     "lucide-react": "^0.479.0",
-    "next": "^16.3.5",
+    "next": "^16.4.3",
     "next-auth": "^4.24.11",
     "radix-ui": "^1.6.7",
     "react": "^19.0.0",
@@ -39,6 +39,7 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
+    "@reactedge/widget-cmsblock": "file:../reactedge/release/source/cmsblock/",
     "@reactedge/widget-createlisting": "file:../reactedge/release/source/createlisting/",
     "@reactedge/widget-editorword": "file:../reactedge/release/source/editorword/",
     "@reactedge/widget-megamenu": "file:../reactedge/release/source/megamenu/",
@@ -51,11 +52,10 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
+    "eslint-plugin-react-hooks": "^7.1.1",
     "tailwindcss": "^4",
     "ts-node": "^10.9.2",
     "typescript": "^5",
-    "@reactedge/widget-cmsblock": "file:../reactedge/release/source/cmsblock/",
-    "typescript-eslint": "^8.70.0",
-    "eslint-plugin-react-hooks": "^7.1.1"
+    "typescript-eslint": "^8.70.0"
   }
 }

@@ -66,11 +66,12 @@ export class RuntimeConfigBuilder {
     }
 
     buildCmsBlock(): CmsBlockRuntimeConfig {
-        // The CMSBlock widget requires an absolute API URL. Keep its browser
-        // requests same-origin; Next.js forwards them to the private service.
-        const api = typeof window === "undefined"
-            ? "http://127.0.0.1:3000/api"
-            : new URL("/api", window.location.origin).toString();
+        // The widget runs in the browser. Its API must therefore be the
+        // browser-facing Next.js route; the route owns the private service URL.
+        const origin = typeof window === "undefined"
+            ? process.env.NEXT_PUBLIC_NODE_HOST || "http://127.0.0.1:3000"
+            : window.location.origin;
+        const api = new URL("/api", origin).toString().replace(/\/+$/, "");
 
         return {
             integrations: {

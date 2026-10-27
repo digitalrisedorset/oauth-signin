@@ -32,6 +32,11 @@ async function proxy(request: Request, context: RouteContext, method: string): P
         const serviceUrl = new URL(
             process.env.CMSBLOCK_API_INTERNAL_URL || "http://127.0.0.1:4191",
         );
+        console.info("[CMSBlock] proxy", {
+            method,
+            routePath,
+            upstream: serviceUrl.origin,
+        });
         const servicePrefix = serviceUrl.pathname.replace(/\/+$/, "");
         serviceUrl.pathname =
             servicePrefix + "/cmsblock/" + path.map(encodeURIComponent).join("/");
@@ -60,7 +65,11 @@ async function proxy(request: Request, context: RouteContext, method: string): P
             headers: responseHeaders,
         });
     } catch (error) {
-        console.error("CMSBlock proxy request failed:", error);
+        console.error("[CMSBlock] proxy request failed", {
+            method,
+            routePath,
+            error: error instanceof Error ? error.message : String(error),
+        });
         return NextResponse.json(
             { error: "Cannot reach the CMSBlock service." },
             { status: 502, headers: { "Cache-Control": "no-store" } },
