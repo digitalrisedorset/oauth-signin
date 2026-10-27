@@ -1,0 +1,12 @@
+{
+  "data": {
+    "title": "Request a quote"
+  },
+  "settings": {
+    "colour": "#176b5b",
+    "countryCode": "GB"
+  },
+  "integration": {
+    "requires": ["magentoGraphql", "intentApi"]
+  }
+}

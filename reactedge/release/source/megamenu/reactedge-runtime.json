@@ -1,11 +1,11 @@
 {
   "integrations": {
     "magentoGraphql": {
-      "api": "https://localhost:3001/graphql"
+      "api": "https://mageos-docker.magsite.fr/graphql"
     }
   },
   "context": {
-    "storeCode": "nextjs",
+    "storeCode": "magento_fr_store",
     "sku": "WJ12",
     "category": "tops-men"
   }

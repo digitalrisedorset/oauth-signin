@@ -1,12 +1,8 @@
 {
     "entries": [
         {
-            "key": "WS10",
-            "dataFile": "products/ws10.json"
-        },
-        {
-            "key": "MH13",
-            "dataFile": "products/mh13.json"
+            "key": "24-MB01",
+            "dataFile": "products/24-mb01.json"
         }
     ]
 }

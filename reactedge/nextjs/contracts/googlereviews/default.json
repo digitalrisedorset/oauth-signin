@@ -1,0 +1,11 @@
+{
+  "data": {
+    "country": "gb",
+    "title": "Business Reviews"
+  },
+  "integration": {
+    "requires": [
+      "googleMaps"
+    ]
+  }
+}
